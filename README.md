@@ -4,11 +4,9 @@ CUIT毕业设计项目
 
 - AdoptOpenJDK 11
 
-- MySQL 5.7
+- H2 Database
 
 - SpringBoot
-
-- MyBatis
 
 - MyBatis Plus
 
@@ -19,5 +17,3 @@ CUIT毕业设计项目
 - Swagger UI
 
 - fastJSON
-
-- PageHelper
