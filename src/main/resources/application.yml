@@ -3,11 +3,15 @@ server:
 
 spring:
   datasource:
-    driver-class-name: org.h2.Driver
-    url: jdbc:h2:~/db
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/petbbs?useSSL=false&autoReconnect=true
     username: root
     password: 123456
-  h2:
-    console:
-      path: /h2-console
-      enabled: true
+    dbcp2:
+      validation-query: 'select 1'
+      test-on-borrow: true
+      test-while-idle: true
+      time-between-eviction-runs-millis: 27800
+      initial-size: 5
+      min-idle: 100
+      max-wait-millis: 10000
