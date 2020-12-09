@@ -4,7 +4,7 @@ CUIT毕业设计项目
 
 - AdoptOpenJDK 11
 
-- H2 Database
+- MySQL 5.7.32
 
 - SpringBoot
 
