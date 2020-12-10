@@ -1,4 +1,4 @@
-package run.nya.petbbs.bean;
+package run.nya.petbbs.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
