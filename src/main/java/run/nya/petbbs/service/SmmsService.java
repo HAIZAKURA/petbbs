@@ -15,16 +15,16 @@ public class SmmsService {
     @Autowired(required = false)
     private SmmsMapper smmsMapper;
 
-    public String getSmmsToken() {
+    public SmmsConfig getSmmsConfig(String item) {
         QueryWrapper<SmmsConfig> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("smms_item", "token");
-        return smmsMapper.selectOne(queryWrapper).getSmmsValue();
+        queryWrapper.eq("smms_item", item);
+        return smmsMapper.selectOne(queryWrapper);
     }
 
-    public Integer setSmmsToken(String token) {
+    public Integer setSmmsConfig(String item, String value) {
         UpdateWrapper<SmmsConfig> updateWrapper = new UpdateWrapper<>();
-        updateWrapper.eq("smms_item", "token");
-        updateWrapper.set("smms_value", token);
+        updateWrapper.eq("smms_item", item);
+        updateWrapper.set("smms_value", value);
         return smmsMapper.update(new SmmsConfig(), updateWrapper);
     }
 }
