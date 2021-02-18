@@ -2,16 +2,62 @@ server:
   port: 8080
 
 spring:
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 100MB
+
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/petbbs?useSSL=false&autoReconnect=true
+    url: jdbc:mysql://localhost:3306/petbbs?useUnicode=true&characterEncoding=utf8&useSSL=false&autoReconnect=true
     username: root
     password: 123456
-    dbcp2:
-      validation-query: 'select 1'
-      test-on-borrow: true
-      test-while-idle: true
-      time-between-eviction-runs-millis: 27800
-      initial-size: 5
-      min-idle: 100
-      max-wait-millis: 10000
+    type: com.zaxxer.hikari.HikariDataSource
+
+  redis:
+    database: 1
+    host: localhost
+    port: 6379
+    password:
+    timeout: 5000
+    lettuce:
+      pool:
+        max-active: 8
+        max-wait: -1ms
+        max-idle: 8
+        min-idle: 0
+
+jwt:
+  # Bearer Token
+  tokenHead: 'Bearer '
+  # Authorization
+  tokenHeader: 'Authorization'
+  # Token失效时间 :60*60*24*7
+  expiration: 604800
+  # 私钥
+  secret: '2CF24FE663DBB493E56BA4E31BE6FD03'
+
+secure:
+  ignored:
+    urls:
+      - /swagger-ui.html
+      - /swagger-resources/**
+      - /swagger/**
+      - /**/v2/api-docs
+      - /**/*.js
+      - /**/*.css
+      - /**/*.png
+      - /**/*.ico
+      - /**/*.jpg
+      - /webjars/springfox-swagger-ui/**
+      - /api/**
+      - /api/qiniu/*.jpg
+
+logging:
+  level:
+    root: info
+    run.nya.petbbs: debug
