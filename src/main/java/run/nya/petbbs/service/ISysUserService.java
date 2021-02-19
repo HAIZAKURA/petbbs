@@ -19,7 +19,7 @@ public interface ISysUserService extends IService<SysUser> {
      * @param  dto
      * @return JWT Token
      */
-    String excuteLogin(LoginDTO dto);
+    String executeLogin(LoginDTO dto);
 
     /**
      * 用户注册
@@ -27,7 +27,7 @@ public interface ISysUserService extends IService<SysUser> {
      * @param  dto
      * @return 注册对象
      */
-    SysUser excuteLogin(RegisterDTO dto);
+    SysUser executeRegister(RegisterDTO dto);
 
     /**
      * 获取用户信息

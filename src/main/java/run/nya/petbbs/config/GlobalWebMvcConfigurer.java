@@ -18,14 +18,13 @@ public class GlobalWebMvcConfigurer implements WebMvcConfigurer {
 
     /**
      * 跨域
-     * @param registry
      */
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
                 .allowedOrigins("*")
-                .allowedMethods("GET", "HEAD", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
+                .allowedMethods("GET", "HEAD", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowCredentials(true)
                 .maxAge(3600);
     }
@@ -36,7 +35,7 @@ public class GlobalWebMvcConfigurer implements WebMvcConfigurer {
         // 允许所有域名跨域
         configuration.addAllowedOrigin("*");
         // 允许全部原始头
-        configuration.addExposedHeader("*");
+        configuration.addAllowedHeader("*");
         // 允许所有请求方法跨域
         configuration.addAllowedMethod("*");
         // 允许跨域发送Cookie
