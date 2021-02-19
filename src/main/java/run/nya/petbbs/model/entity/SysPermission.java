@@ -11,6 +11,8 @@ import java.io.Serializable;
 
 /**
  * 权限实体类
+ *
+ * 2021/02/18
  */
 @Data
 @TableName("sys_permission")

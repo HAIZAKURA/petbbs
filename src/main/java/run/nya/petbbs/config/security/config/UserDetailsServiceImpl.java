@@ -10,6 +10,9 @@ import run.nya.petbbs.service.ISysUserService;
 
 import javax.annotation.Resource;
 
+/**
+ * 2021/02/18
+ */
 @Component
 public class UserDetailsServiceImpl implements UserDetailsService {
 

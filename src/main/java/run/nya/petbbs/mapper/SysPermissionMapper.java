@@ -7,6 +7,8 @@ import run.nya.petbbs.model.entity.SysPermission;
 
 /**
  * 权限
+ *
+ * 2021/02/18
  */
 @Mapper
 @Repository

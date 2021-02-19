@@ -9,6 +9,11 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * MyBatis Plus
+ *
+ * 2021/02/18
+ */
 @Configuration
 @MapperScan("run.nya.petbbs.mapper")
 public class MybatisPlusConfig {

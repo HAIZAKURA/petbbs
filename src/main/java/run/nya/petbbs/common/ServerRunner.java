@@ -7,6 +7,8 @@ import org.springframework.stereotype.Component;
 
 /**
  * CommandLineRunner
+ *
+ * 2021/02/18
  */
 @Component
 public class ServerRunner implements CommandLineRunner {

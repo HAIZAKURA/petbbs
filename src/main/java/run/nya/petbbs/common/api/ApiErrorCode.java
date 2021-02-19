@@ -2,6 +2,8 @@ package run.nya.petbbs.common.api;
 
 /**
  * API Code
+ *
+ * 2021/02/18
  */
 public enum ApiErrorCode implements IErrorCode {
 

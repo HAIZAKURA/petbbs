@@ -12,6 +12,8 @@ import java.util.Map;
 
 /**
  * 全局异常处理
+ *
+ * 2021/02/18
  */
 @ControllerAdvice
 public class GlobalExceptionHandler {

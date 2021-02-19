@@ -2,6 +2,8 @@ package run.nya.petbbs.common.api;
 
 /**
  * API Code 接口
+ *
+ * 2021/02/18
  */
 public interface IErrorCode {
 

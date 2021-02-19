@@ -8,6 +8,8 @@ import java.util.Collection;
 
 /**
  * 用户登录数据
+ *
+ * 2021/02/18
  */
 public class AdminUserDetails implements UserDetails {
 

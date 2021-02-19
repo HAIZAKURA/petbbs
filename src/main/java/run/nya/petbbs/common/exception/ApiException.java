@@ -4,6 +4,8 @@ import run.nya.petbbs.common.api.IErrorCode;
 
 /**
  * 自定义API异常
+ *
+ * 2021/02/18
  */
 public class ApiException extends RuntimeException {
 

@@ -12,7 +12,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * 自定义返回结果：没有权限访问时
+ * 自定义返回结果 无权限访问
+ *
+ * 2021/02/18
  */
 @Component
 public class RestAccessDeniedHandler implements AccessDeniedHandler {

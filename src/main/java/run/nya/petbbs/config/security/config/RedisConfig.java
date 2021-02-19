@@ -6,6 +6,8 @@ package run.nya.petbbs.config.security.config;
 //
 // /**
 //  * Redis配置类
+//  *
+//  * 2021/02/18
 //  */
 // @EnableCaching
 // @Configuration

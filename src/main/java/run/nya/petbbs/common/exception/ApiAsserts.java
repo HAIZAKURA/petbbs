@@ -5,6 +5,8 @@ import run.nya.petbbs.common.api.IErrorCode;
 /**
  * 断言处理类
  * 抛出自定义异常
+ *
+ * 2021/02/18
  */
 public class ApiAsserts {
 

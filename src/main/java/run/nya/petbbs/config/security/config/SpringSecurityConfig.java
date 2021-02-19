@@ -9,6 +9,11 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import javax.annotation.Resource;
 import java.util.List;
 
+/**
+ * Spring Security
+ *
+ * 2021/02/18
+ */
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)

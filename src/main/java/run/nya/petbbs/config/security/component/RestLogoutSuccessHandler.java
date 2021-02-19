@@ -12,7 +12,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * 自定义注销返回结果
+ * 自定义返回结果 用户注销
+ *
+ * 2021/02/18
  */
 @Component
 public class RestLogoutSuccessHandler implements LogoutSuccessHandler {

@@ -9,8 +9,9 @@ import java.util.List;
 
 /**
  * 分页数据封装类
+ * MP Elastic等分页对象重新对接
  *
- * MP，Elastic等分页对象重新对接
+ * 2021/02/18
  */
 @Data
 @NoArgsConstructor

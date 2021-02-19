@@ -7,6 +7,8 @@ import javax.validation.constraints.Size;
 
 /**
  * 用户登录DTO
+ *
+ * 2021/02/18
  */
 @Data
 public class LoginDTO {

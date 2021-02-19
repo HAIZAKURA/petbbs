@@ -17,6 +17,8 @@ import java.util.Map;
 /**
  * 动态权限数据源
  * 获取动态权限规则
+ *
+ * 2021/02/18
  */
 public class DynamicSecurityMetadataSource implements FilterInvocationSecurityMetadataSource {
 

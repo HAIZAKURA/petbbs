@@ -12,7 +12,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * 自定义返回结果：未登录或登录过期
+ * 自定义返回结果 未登录或登录过期
+ *
+ * 2021/02/18
  */
 @Component
 public class RestAuthenticationEntryPoint implements AuthenticationEntryPoint {

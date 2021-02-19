@@ -7,7 +7,9 @@ import run.nya.petbbs.model.entity.SysUser;
 import run.nya.petbbs.model.vo.ProfileVO;
 
 /**
- * 用户
+ * 用户接口
+ *
+ * 2021/02/18
  */
 public interface ISysUserService extends IService<SysUser> {
 

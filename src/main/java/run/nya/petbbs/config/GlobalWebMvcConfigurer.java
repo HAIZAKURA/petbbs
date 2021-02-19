@@ -10,6 +10,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
  * 全局Spring MVC设置
+ *
+ * 2021/02/18
  */
 @Configuration
 public class GlobalWebMvcConfigurer implements WebMvcConfigurer {

@@ -13,6 +13,8 @@ import java.util.Collection;
 /**
  * 动态权限决策管理器
  * 判断用户是否有访问权限
+ *
+ * 2021/02/18
  */
 public class DynamicAccessDecisionManager implements AccessDecisionManager {
 

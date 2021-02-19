@@ -8,6 +8,8 @@ import javax.validation.constraints.NotEmpty;
 
 /**
  * 用户注册DTO
+ *
+ * 2021/02/18
  */
 @Data
 public class RegisterDTO {
