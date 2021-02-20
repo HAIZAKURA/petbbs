@@ -74,8 +74,9 @@ public class SysUser implements Serializable {
     @TableField("status")
     private Boolean status = true;
 
+    @Builder.Default
     @TableField("role_id")
-    private Integer roleId;
+    private Integer roleId = 10000;
 
     @TableField(value = "create_time", fill = FieldFill.INSERT)
     private Date createTime;

@@ -1,6 +1,7 @@
 package run.nya.petbbs.config.security.config;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import run.nya.petbbs.model.entity.SysUser;
 
@@ -21,7 +22,20 @@ public class AdminUserDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+//        return null;
+        if (sysUser.getRoleId() != null) {
+            if (sysUser.getRoleId() == 1) {
+                return AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_SUPERADMIN");
+            } else if (sysUser.getRoleId() == 2) {
+                return AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_ADMIN");
+            } else if (sysUser.getRoleId() == 10000) {
+                return AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_USER");
+            } else {
+                return null;
+            }
+        } else {
+            return null;
+        }
     }
 
     @Override

@@ -82,7 +82,6 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .cors()
-
                 // 授权配置
                 .and()
                 .authorizeRequests()
