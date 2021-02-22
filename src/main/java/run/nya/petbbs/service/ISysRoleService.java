@@ -12,6 +12,7 @@ public interface ISysRoleService extends IService<SysRole> {
 
     /**
      * 获取角色
+     *
      * @param  roleId
      * @return
      */

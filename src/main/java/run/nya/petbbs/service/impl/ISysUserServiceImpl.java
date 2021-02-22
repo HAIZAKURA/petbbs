@@ -59,6 +59,7 @@ public class ISysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> imp
 
     /**
      * 通过用户名获取用户
+     *
      * @param  username
      * @return
      */
@@ -71,6 +72,7 @@ public class ISysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> imp
 
     /**
      * 用户登录
+     *
      * @param  dto
      * @return
      */
@@ -99,6 +101,7 @@ public class ISysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> imp
 
     /**
      * 用户注册
+     *
      * @param  dto
      * @return
      */
@@ -140,6 +143,7 @@ public class ISysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> imp
 
     /**
      * 获取用户信息
+     *
      * @param  id 用户ID
      * @return
      */
