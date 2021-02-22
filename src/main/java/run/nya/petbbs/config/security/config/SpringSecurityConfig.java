@@ -25,7 +25,7 @@ import java.util.List;
  * Spring Security
  * 支持不同服务自定义白名单资源路径和查询用户逻辑
  *
- * 2021/02/18
+ * 2021/02/22
  */
 @Configuration
 @EnableWebSecurity
@@ -93,7 +93,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and()
                 .logout()
-                .logoutUrl("/logout")
+                .logoutUrl("/api/logout")
                 .logoutSuccessHandler(restLogoutSuccessHandler);
 
         // 禁用缓存
