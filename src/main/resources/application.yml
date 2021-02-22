@@ -65,13 +65,10 @@ secure:
       - /webjars/springfox-swagger-ui/**
       - /actuator/**
       - /druid/**
-      - /api/qiniu
-      - /api/qiniu/**
-      - /sys/user/login
-      - /sys/user/register
-      - /sys/user/info
-      - /sys/user/active
-      - /logout
+      - /api/login
+      - /api/register
+      - /api/active
+      - /api/logout
 
 logging:
   level:
