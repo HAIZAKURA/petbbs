@@ -30,7 +30,8 @@ public class QiniuController extends BaseController {
 
 
     /**
-     * 超级管理员获取七牛配置
+     * 获取七牛配置
+     * 超级管理员
      *
      * @return ApiResult
      */
@@ -43,7 +44,8 @@ public class QiniuController extends BaseController {
     }
 
     /**
-     * 超级管理员修改七牛配置
+     * 修改七牛配置
+     * 超级管理员
      *
      * @param  dto
      * @return ApiResult
@@ -60,6 +62,7 @@ public class QiniuController extends BaseController {
 
     /**
      * 上传图片
+     * 登录用户
      *
      * @param  file
      * @param  name

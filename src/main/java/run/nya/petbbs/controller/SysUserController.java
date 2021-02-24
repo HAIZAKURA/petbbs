@@ -100,7 +100,8 @@ public class SysUserController extends BaseController {
     }
 
     /**
-     * 获取用户信息控制器
+     * 获取当前用户信息控制器
+     * 登录用户
      *
      * @param  principal
      * @return ApiResult
@@ -114,7 +115,9 @@ public class SysUserController extends BaseController {
     }
 
     /**
-     * 管理员获取用户信息
+     * 获取用户信息
+     * 超级管理员
+     * 管理员
      *
      * @param  username
      * @return ApiResult
@@ -128,7 +131,8 @@ public class SysUserController extends BaseController {
     }
 
     /**
-     * 修改用户信息控制器
+     * 修改当前用户信息控制器
+     * 登录用户
      *
      * @param  sysUser
      * @param  principal
@@ -146,7 +150,9 @@ public class SysUserController extends BaseController {
     }
 
     /**
-     * 管理员修改用户信息控制器
+     * 修改用户信息控制器
+     * 超级管理员
+     * 管理员
      *
      * @param  username
      * @param  sysUser
