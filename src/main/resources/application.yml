@@ -70,6 +70,7 @@ secure:
       - /api/active
       - /api/logout
       - /api/friends
+      - /api/billboard
 
 logging:
   level:
