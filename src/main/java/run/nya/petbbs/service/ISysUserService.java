@@ -25,7 +25,7 @@ public interface ISysUserService extends IService<SysUser> {
      * 用户注册
      *
      * @param  dto
-     * @return 注册对象
+     * @return SysUser
      */
     SysUser executeRegister(RegisterDTO dto);
 
@@ -33,7 +33,7 @@ public interface ISysUserService extends IService<SysUser> {
      * 获取用户信息
      *
      * @param  username
-     * @return dbUser
+     * @return SysUser
      */
     SysUser getUserByUsername(String username);
 

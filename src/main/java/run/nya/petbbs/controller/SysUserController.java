@@ -106,7 +106,7 @@ public class SysUserController extends BaseController {
      * @param  principal
      * @return ApiResult
      */
-    @ApiOperation(value = "获取用户信息")
+    @ApiOperation(value = "获取当前用户信息")
     @PreAuthorize("isAuthenticated()")
     @RequestMapping(value = "/user", method = RequestMethod.GET)
     public ApiResult<SysUser> getUser(Principal principal) {
@@ -138,7 +138,7 @@ public class SysUserController extends BaseController {
      * @param  principal
      * @return ApiResult
      */
-    @ApiOperation(value = "修改用户信息")
+    @ApiOperation(value = "修改当前用户信息")
     @PreAuthorize("isAuthenticated()")
     @RequestMapping(value = "/user", method = RequestMethod.PUT)
     public ApiResult<Object> updateUser(@RequestBody SysUser sysUser, Principal principal) {
