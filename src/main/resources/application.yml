@@ -69,6 +69,7 @@ secure:
       - /api/register
       - /api/active
       - /api/logout
+      - /api/friends
 
 logging:
   level:
