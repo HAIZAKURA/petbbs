@@ -1,5 +1,6 @@
 package run.nya.petbbs.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -33,14 +34,31 @@ public class SysFriendLinkController extends BaseController {
     private ISysFriendLinkService iSysFriendLinkService;
 
     /**
+     * 获取有效友链
+     *
+     * @return ApiResult
+     */
+    @ApiOperation(value = "获取有效友链")
+    @RequestMapping(value = "/friends", method = RequestMethod.GET)
+    public ApiResult<List<SysFriendLink>> getLinks() {
+        LambdaQueryWrapper<SysFriendLink> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(SysFriendLink::getState, true);
+        List<SysFriendLink> list = iSysFriendLinkService.list(wrapper);
+        return ApiResult.success(list);
+    }
+
+    /**
      * 获取所有友链
+     * 超级管理员
      *
      * @return ApiResult
      */
     @ApiOperation(value = "获取所有友链")
-    @RequestMapping(value = "/friends", method = RequestMethod.GET)
-    public ApiResult<List<SysFriendLink>> getLinks() {
-        return ApiResult.success(iSysFriendLinkService.list());
+    @PreAuthorize("hasRole('ROLE_SUPERADMIN')")
+    @RequestMapping(value = "/admin/friends", method = RequestMethod.GET)
+    public ApiResult<List<SysFriendLink>> getLinksByAdmin() {
+        List<SysFriendLink> list = iSysFriendLinkService.list();
+        return ApiResult.success(list);
     }
 
     /**

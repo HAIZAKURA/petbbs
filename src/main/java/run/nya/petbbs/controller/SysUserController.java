@@ -151,7 +151,7 @@ public class SysUserController extends BaseController {
     @ApiOperation(value = "管理员获取所有用户信息")
     @PreAuthorize("hasRole('ROLE_SUPERADMIN') or hasRole('ROLE_ADMIN')")
     @RequestMapping(value = "/admin/user", method = RequestMethod.GET)
-    public ApiResult<List<SysUser>> getAllUserByAdmin() {
+    public ApiResult<List<SysUser>> getUsersByAdmin() {
         return ApiResult.success(iSysUserService.list());
     }
 

@@ -40,8 +40,10 @@ public class SysBillboardController extends BaseController {
      */
     @ApiOperation(value = "获取有效公告")
     @RequestMapping(value = "/billboard", method = RequestMethod.GET)
-    public ApiResult<List<SysBillboard>> getBillboard() {
-        List<SysBillboard> list = iSysBillboardService.list(new LambdaQueryWrapper<SysBillboard>().eq(SysBillboard::getState, true));
+    public ApiResult<List<SysBillboard>> getBillboards() {
+        LambdaQueryWrapper<SysBillboard> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(SysBillboard::getState, true);
+        List<SysBillboard> list = iSysBillboardService.list(wrapper);
         return ApiResult.success(list);
     }
 
@@ -54,7 +56,7 @@ public class SysBillboardController extends BaseController {
     @ApiOperation(value = "获取所有公告")
     @PreAuthorize("hasRole('ROLE_SUPERADMIN')")
     @RequestMapping(value = "/admin/billboard", method = RequestMethod.GET)
-    public ApiResult<List<SysBillboard>> getAllBillboard() {
+    public ApiResult<List<SysBillboard>> getBillboardsByAdmin() {
         List<SysBillboard> list = iSysBillboardService.list();
         return ApiResult.success(list);
     }
@@ -62,12 +64,13 @@ public class SysBillboardController extends BaseController {
     /**
      * 添加公告
      * 超级管理员
+     * 管理员
      *
      * @param  dto
      * @return ApiResult
      */
     @ApiOperation(value = "添加公告")
-    @PreAuthorize("hasRole('ROLE_SUPERADMIN')")
+    @PreAuthorize("hasRole('ROLE_SUPERADMIN') or hasRole('ROLE_ADMIN')")
     @RequestMapping(value = "/admin/billboard", method = RequestMethod.POST)
     public ApiResult<Map<String, Object>> addBillboard(@Valid @RequestBody BillboardDTO dto) {
         SysBillboard sysBillboard = iSysBillboardService.addBillboard(dto);
@@ -82,16 +85,22 @@ public class SysBillboardController extends BaseController {
     /**
      * 修改公告
      * 超级管理员
+     * 管理员
      *
      * @param  sysBillboard
      * @return ApiResult
      */
     @ApiOperation(value = "修改公告")
-    @PreAuthorize("hasRole('ROLE_SUPERADMIN')")
+    @PreAuthorize("hasRole('ROLE_SUPERADMIN') or hasRole('ROLE_ADMIN')")
     @RequestMapping(value = "/admin/billboard", method = RequestMethod.PUT)
     public ApiResult<String> updateBillboard(@RequestBody SysBillboard sysBillboard) {
-        iSysBillboardService.updateById(sysBillboard);
-        return ApiResult.success("修改成功");
+        try {
+            iSysBillboardService.updateById(sysBillboard);
+            return ApiResult.success("修改成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ApiResult.failed("修改失败");
     }
 
 }
