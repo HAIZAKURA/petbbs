@@ -71,6 +71,7 @@ secure:
       - /api/logout
       - /api/friends
       - /api/billboard
+      - /api/section
 
 logging:
   level:
