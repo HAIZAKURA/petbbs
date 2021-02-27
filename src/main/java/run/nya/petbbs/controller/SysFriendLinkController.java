@@ -74,8 +74,13 @@ public class SysFriendLinkController extends BaseController {
     @PreAuthorize("hasRole('ROLE_SUPERADMIN')")
     @RequestMapping(value = "/admin/friends", method = RequestMethod.PUT)
     public ApiResult<String> updateLink(@RequestBody SysFriendLink sysFriendLink) {
-        iSysFriendLinkService.updateById(sysFriendLink);
-        return ApiResult.success("修改成功");
+        try {
+            iSysFriendLinkService.updateById(sysFriendLink);
+            return ApiResult.success("修改成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ApiResult.failed("修改失败");
     }
 
 }

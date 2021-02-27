@@ -4,6 +4,11 @@ import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 
+/**
+ * 友链DTO
+ *
+ * 2021/02/26
+ */
 @Data
 public class FriendLinkDTO {
 

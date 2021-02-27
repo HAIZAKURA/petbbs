@@ -18,6 +18,7 @@ import javax.annotation.Resource;
 import javax.validation.Valid;
 import java.security.Principal;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -111,7 +112,24 @@ public class SysUserController extends BaseController {
     @RequestMapping(value = "/user", method = RequestMethod.GET)
     public ApiResult<SysUser> getUser(Principal principal) {
         SysUser sysUser = iSysUserService.getUserByUsername(principal.getName());
+        if (ObjectUtils.isEmpty(sysUser)) {
+            return ApiResult.failed("操作失败");
+        }
         return ApiResult.success(sysUser);
+    }
+
+    /**
+     * 获取所有用户信息
+     * 超级管理员
+     * 管理员
+     *
+     * @return ApiResult
+     */
+    @ApiOperation(value = "管理员获取所有用户信息")
+    @PreAuthorize("hasRole('ROLE_SUPERADMIN') or hasRole('ROLE_ADMIN')")
+    @RequestMapping(value = "/admin/user", method = RequestMethod.GET)
+    public ApiResult<List<SysUser>> getAllUserByAdmin() {
+        return ApiResult.success(iSysUserService.list());
     }
 
     /**
@@ -127,6 +145,9 @@ public class SysUserController extends BaseController {
     @RequestMapping(value = "/admin/user/{username}", method = RequestMethod.GET)
     public ApiResult<SysUser> getUserByAdmin(@PathVariable("username") String username) {
         SysUser sysUser = iSysUserService.getUserByUsername(username);
+        if (ObjectUtils.isEmpty(sysUser)) {
+            return ApiResult.failed("操作失败");
+        }
         return ApiResult.success(sysUser);
     }
 
@@ -154,17 +175,18 @@ public class SysUserController extends BaseController {
      * 超级管理员
      * 管理员
      *
-     * @param  username
      * @param  sysUser
      * @return ApiResult
      */
     @ApiOperation(value = "管理员修改用户信息")
     @PreAuthorize("hasRole('ROLE_SUPERADMIN') or hasRole('ROLE_ADMIN')")
-    @RequestMapping(value = "/admin/user/{username}", method = RequestMethod.PUT)
-    public ApiResult<Object> updateUserByAdmin(@PathVariable("username") String username, @RequestBody SysUser sysUser) {
-        if (Objects.equals(username, sysUser.getUsername())) {
+    @RequestMapping(value = "/admin/user", method = RequestMethod.PUT)
+    public ApiResult<Object> updateUserByAdmin(@RequestBody SysUser sysUser) {
+        try {
             iSysUserService.updateById(sysUser);
             return ApiResult.success(sysUser, "修改成功");
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return ApiResult.failed("修改失败");
     }
