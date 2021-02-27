@@ -6,7 +6,15 @@ CUIT毕业设计项目
 
 - MySQL 5.7.32
 
+- Redis 5.0.10
+
 - SpringBoot
+
+- SpringBoot Security
+
+- SpringBoot Websocket
+
+- SpringBoot Elasticsearch
 
 - MyBatis Plus
 
@@ -17,3 +25,17 @@ CUIT毕业设计项目
 - Swagger UI
 
 - fastJSON
+
+- JJWT
+
+- Qiniu Java SDK
+
+- JavaMail API
+
+- Hutool All
+
+- Apache Commons Pool
+
+- Hibernate Validator Engine
+
+- JAXB API
