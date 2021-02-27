@@ -25,7 +25,7 @@ import java.util.Objects;
 /**
  * 用户控制器
  *
- * 2021/02/22
+ * 2021/02/27
  */
 @RestController
 @RequestMapping("/api")
@@ -119,6 +119,29 @@ public class SysUserController extends BaseController {
     }
 
     /**
+     * 获取指定用户信息
+     * 登录用户
+     *
+     * @param  param
+     * @return ApiResult
+     */
+    @ApiOperation(value = "获取指定用户信息")
+    @PreAuthorize("isAuthenticated()")
+    @RequestMapping(value = "/user/{usernameXid}", method = RequestMethod.GET)
+    public ApiResult<SysUser> getUserByUsernameOrId(@PathVariable("usernameXid") String param) {
+        SysUser sysUser = null;
+        if (param.matches("[0-9]{19,}")) {
+            sysUser = iSysUserService.getById(param);
+        } else {
+            sysUser = iSysUserService.getUserByUsername(param);
+        }
+        if (ObjectUtils.isEmpty(sysUser)) {
+            return ApiResult.failed("操作失败");
+        }
+        return ApiResult.success(sysUser);
+    }
+
+    /**
      * 获取所有用户信息
      * 超级管理员
      * 管理员
@@ -130,25 +153,6 @@ public class SysUserController extends BaseController {
     @RequestMapping(value = "/admin/user", method = RequestMethod.GET)
     public ApiResult<List<SysUser>> getAllUserByAdmin() {
         return ApiResult.success(iSysUserService.list());
-    }
-
-    /**
-     * 获取用户信息
-     * 超级管理员
-     * 管理员
-     *
-     * @param  username
-     * @return ApiResult
-     */
-    @ApiOperation(value = "管理员获取用户信息")
-    @PreAuthorize("hasRole('ROLE_SUPERADMIN') or hasRole('ROLE_ADMIN')")
-    @RequestMapping(value = "/admin/user/{username}", method = RequestMethod.GET)
-    public ApiResult<SysUser> getUserByAdmin(@PathVariable("username") String username) {
-        SysUser sysUser = iSysUserService.getUserByUsername(username);
-        if (ObjectUtils.isEmpty(sysUser)) {
-            return ApiResult.failed("操作失败");
-        }
-        return ApiResult.success(sysUser);
     }
 
     /**
