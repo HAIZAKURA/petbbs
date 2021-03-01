@@ -34,6 +34,8 @@ CUIT毕业设计项目
 
 - Hutool All
 
+- Emoji Java
+
 - Apache Commons Pool
 
 - Hibernate Validator Engine
