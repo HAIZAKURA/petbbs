@@ -13,28 +13,27 @@ import lombok.experimental.Accessors;
 import java.io.Serializable;
 
 /**
- * 标签实体类
+ * 话题-标签 实体类
  *
- * 2021/02/27
+ * 2021/03/01
  */
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@TableName("sys_tag")
+@Builder
+@TableName("sys_post_tag")
 @Accessors(chain = true)
-public class SysTag implements Serializable {
+public class SysPostTag implements Serializable {
 
-    private static final long serialVersionUID = 9022915074845862648L;
+    private static final long serialVersionUID = 3471849175953197745L;
 
-    @TableId(value = "id", type = IdType.ASSIGN_ID)
-    private String id;
+    @TableId(type = IdType.AUTO)
+    private Integer id;
 
-    @TableField("name")
-    private String name;
+    @TableField("tag_id")
+    private String tagId;
 
-    @Builder.Default
-    @TableField("post_count")
-    private Integer postCount = 1;
+    @TableField("post_id")
+    private String postId;
 
 }

@@ -3,7 +3,9 @@ package run.nya.petbbs.model.vo;
 import lombok.Data;
 
 /**
- * 用户数据
+ * 用户数据视图层
+ *
+ * 2021/03/01
  */
 @Data
 public class ProfileVO {
@@ -31,22 +33,22 @@ public class ProfileVO {
     /**
      * 关注数
      */
-    private Integer followCount;
+//    private Integer followCount;
 
     /**
      * 关注者数
      */
-    private Integer followerCount;
+//    private Integer followerCount;
 
     /**
      * 文章数
      */
-    private Integer topicCount;
+    private Integer postCount;
 
     /**
      * 专栏数
      */
-    private Integer columns;
+    private Integer sections;
 
     /**
      * 评论数

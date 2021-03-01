@@ -23,9 +23,13 @@ import org.springframework.util.ObjectUtils;
 import run.nya.petbbs.common.exception.ApiAsserts;
 import run.nya.petbbs.config.redis.RedisService;
 import run.nya.petbbs.config.security.util.JwtTokenUtil;
+import run.nya.petbbs.mapper.SysPostMapper;
+import run.nya.petbbs.mapper.SysSectionMapper;
 import run.nya.petbbs.mapper.SysUserMapper;
 import run.nya.petbbs.model.dto.LoginDTO;
 import run.nya.petbbs.model.dto.RegisterDTO;
+import run.nya.petbbs.model.entity.SysPost;
+import run.nya.petbbs.model.entity.SysSection;
 import run.nya.petbbs.model.entity.SysUser;
 import run.nya.petbbs.model.vo.ProfileVO;
 import run.nya.petbbs.service.ISysUserService;
@@ -41,6 +45,12 @@ import java.util.Date;
 @Service
 @Transactional(rollbackFor = Exception.class)
 public class ISysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> implements ISysUserService {
+
+    @Autowired
+    private SysPostMapper sysPostMapper;
+
+    @Autowired
+    private SysSectionMapper sysSectionMapper;
 
     @Value("${web.domain}")
     private String domain;
@@ -145,13 +155,19 @@ public class ISysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> imp
      * 获取用户信息
      *
      * @param  id 用户ID
-     * @return
+     * @return ProfileVO
      */
     @Override
     public ProfileVO getUserProfile(String id) {
         ProfileVO profileVO = new ProfileVO();
         SysUser sysUser = baseMapper.selectById(id);
         BeanUtils.copyProperties(sysUser, profileVO);
+        // 用户话题数
+        Integer postCount = sysPostMapper.selectCount(new LambdaQueryWrapper<SysPost>().eq(SysPost::getUserId, id));
+        profileVO.setPostCount(postCount);
+        // 专栏数
+        Integer sectionCount = sysSectionMapper.selectCount(new LambdaQueryWrapper<SysSection>().eq(SysSection::getUserId, id));
+        profileVO.setSections(sectionCount);
         return profileVO;
     }
 
