@@ -73,6 +73,8 @@ secure:
       - /api/billboard
       - /api/section
       - /api/tag
+      - /api/tag/**
+      - /api/post
 
 logging:
   level:

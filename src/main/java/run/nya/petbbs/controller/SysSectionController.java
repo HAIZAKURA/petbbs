@@ -1,13 +1,12 @@
 package run.nya.petbbs.controller;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.ObjectUtils;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import run.nya.petbbs.common.api.ApiResult;
 import run.nya.petbbs.model.dto.SectionDTO;
 import run.nya.petbbs.model.entity.SysSection;
@@ -35,13 +34,18 @@ public class SysSectionController extends BaseController {
     /**
      * 获取话题专栏
      *
+     * @param  pageNum
+     * @param  pageSize
      * @return ApiResult
      */
     @ApiOperation(value = "获取话题专栏")
     @RequestMapping(value = "/section", method = RequestMethod.GET)
-    public ApiResult<List<SysSection>> getSection() {
-        List<SysSection> list = iSysSectionService.list();
-        return ApiResult.success(list);
+    public ApiResult<Page<SysSection>> getSection(
+            @ApiParam(name = "pageNum", value = "页码:默认0", required = true) @RequestParam(value = "pageNum", defaultValue = "0") Integer pageNum,
+            @ApiParam(name = "pageSize", value = "每页数据量:默认10", required = true) @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize
+    ) {
+        Page<SysSection> page = iSysSectionService.page(new Page<>(pageNum, pageSize), null);
+        return ApiResult.success(page);
     }
 
     /**
