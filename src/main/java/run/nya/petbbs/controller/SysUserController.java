@@ -2,6 +2,7 @@ package run.nya.petbbs.controller;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
@@ -122,18 +123,20 @@ public class SysUserController extends BaseController {
      * 获取指定用户信息
      * 登录用户
      *
-     * @param  param
+     * @param  usernameXid
      * @return ApiResult
      */
     @ApiOperation(value = "获取指定用户信息")
     @PreAuthorize("isAuthenticated()")
     @RequestMapping(value = "/user/{usernameXid}", method = RequestMethod.GET)
-    public ApiResult<SysUser> getUserByUsernameOrId(@PathVariable("usernameXid") String param) {
+    public ApiResult<SysUser> getUserByUsernameOrId(
+            @ApiParam(name = "usernameXid", value = "用户名或用户ID", required = true) @PathVariable("usernameXid") String usernameXid
+    ) {
         SysUser sysUser = null;
-        if (param.matches("[0-9]{19,}")) {
-            sysUser = iSysUserService.getById(param);
+        if (usernameXid.matches("[0-9]{19,}")) {
+            sysUser = iSysUserService.getById(usernameXid);
         } else {
-            sysUser = iSysUserService.getUserByUsername(param);
+            sysUser = iSysUserService.getUserByUsername(usernameXid);
         }
         if (ObjectUtils.isEmpty(sysUser)) {
             return ApiResult.failed("操作失败");

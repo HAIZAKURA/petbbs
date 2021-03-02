@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import run.nya.petbbs.mapper.SysTagMapper;
-import run.nya.petbbs.model.dto.TagDTO;
 import run.nya.petbbs.model.entity.SysPost;
 import run.nya.petbbs.model.entity.SysTag;
 import run.nya.petbbs.service.ISysPostService;
@@ -32,21 +31,6 @@ public class ISysTagServiceImpl extends ServiceImpl<SysTagMapper, SysTag> implem
 
     /**
      * 添加标签
-     *
-     * @param  dto
-     * @return SysTag
-     */
-    @Override
-    public SysTag addTag(TagDTO dto) {
-        SysTag sysTag = SysTag.builder()
-                .name(dto.getName())
-                .build();
-        baseMapper.insert(sysTag);
-        return sysTag;
-    }
-
-    /**
-     * 插入标签
      *
      * @param  tags
      * @return List

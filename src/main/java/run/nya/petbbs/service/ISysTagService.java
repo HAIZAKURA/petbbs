@@ -2,7 +2,6 @@ package run.nya.petbbs.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
-import run.nya.petbbs.model.dto.TagDTO;
 import run.nya.petbbs.model.entity.SysPost;
 import run.nya.petbbs.model.entity.SysTag;
 
@@ -17,14 +16,6 @@ public interface ISysTagService extends IService<SysTag> {
 
     /**
      * 添加标签
-     *
-     * @param  dto
-     * @return SysTag
-     */
-    SysTag addTag(TagDTO dto);
-
-    /**
-     * 插入标签
      *
      * @param  tags
      * @return List
