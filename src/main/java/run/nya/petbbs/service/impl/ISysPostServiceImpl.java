@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
+import run.nya.petbbs.common.exception.ApiAsserts;
 import run.nya.petbbs.config.redis.RedisService;
 import run.nya.petbbs.mapper.SysPostMapper;
 import run.nya.petbbs.mapper.SysTagMapper;
@@ -166,7 +167,7 @@ public class ISysPostServiceImpl extends ServiceImpl<SysPostMapper, SysPost> imp
     }
 
     /**
-     * 发布
+     * 创建话题
      *
      * @param  dto
      * @param  sysUser
@@ -185,10 +186,10 @@ public class ISysPostServiceImpl extends ServiceImpl<SysPostMapper, SysPost> imp
         baseMapper.insert(post);
         Integer newScore = sysUser.getScore() + 1;
         sysUserMapper.updateById(sysUser.setScore(newScore));
-        if (!ObjectUtils.isEmpty(dto.getTags())) {
-            List<SysTag> tags = iSysTagService.addTags(dto.getTags());
-            iSysPostTagService.createPostTag(post.getId(), tags);
+        if (ObjectUtils.isEmpty(dto.getTags())) {
+            ApiAsserts.fail("标签不能为空");
         }
+        iSysPostTagService.createPostTag(post.getId(), dto.getTags());
         redisService.del("getPostListAndPage");
         return post;
     }

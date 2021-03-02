@@ -1,6 +1,7 @@
 package run.nya.petbbs.model.dto;
 
 import lombok.Data;
+import run.nya.petbbs.model.entity.SysTag;
 
 import java.io.Serializable;
 import java.util.List;
@@ -19,6 +20,6 @@ public class CreatePostDTO implements Serializable {
 
     private String content;
 
-    private List<String> tags;
+    private List<SysTag> tags;
 
 }
