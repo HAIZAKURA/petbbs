@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import run.nya.petbbs.model.entity.SysPost;
 import run.nya.petbbs.model.entity.SysTag;
+import run.nya.petbbs.model.vo.PostVO;
 
 import java.util.List;
 
