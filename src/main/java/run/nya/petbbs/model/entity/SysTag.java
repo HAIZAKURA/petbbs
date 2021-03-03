@@ -35,6 +35,6 @@ public class SysTag implements Serializable {
 
     @Builder.Default
     @TableField("post_count")
-    private Integer postCount = 1;
+    private Integer postCount = 0;
 
 }
