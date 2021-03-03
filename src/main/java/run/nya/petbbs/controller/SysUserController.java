@@ -1,5 +1,7 @@
 package run.nya.petbbs.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -12,7 +14,9 @@ import run.nya.petbbs.config.redis.RedisService;
 import run.nya.petbbs.model.dto.ActiveDTO;
 import run.nya.petbbs.model.dto.LoginDTO;
 import run.nya.petbbs.model.dto.RegisterDTO;
+import run.nya.petbbs.model.entity.SysPost;
 import run.nya.petbbs.model.entity.SysUser;
+import run.nya.petbbs.service.ISysPostService;
 import run.nya.petbbs.service.ISysUserService;
 
 import javax.annotation.Resource;
@@ -35,6 +39,9 @@ public class SysUserController extends BaseController {
 
     @Resource
     private ISysUserService iSysUserService;
+
+    @Resource
+    private ISysPostService iSysPostService;
 
     @Resource
     private RedisService redisService;
@@ -102,21 +109,33 @@ public class SysUserController extends BaseController {
     }
 
     /**
-     * 获取当前用户信息控制器
+     * 获取当前用户信息
      * 登录用户
      *
      * @param  principal
+     * @param  pageNum
+     * @param  pageSize
      * @return ApiResult
      */
     @ApiOperation(value = "获取当前用户信息")
     @PreAuthorize("isAuthenticated()")
     @RequestMapping(value = "/user", method = RequestMethod.GET)
-    public ApiResult<SysUser> getUser(Principal principal) {
+    public ApiResult<Map<String, Object>> getUser(
+            Principal principal,
+            @ApiParam(name = "pageNum", value = "页码:默认1", required = true) @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
+            @ApiParam(name = "pageSize", value = "每页数据量:默认10", required = true) @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize
+
+    ) {
         SysUser sysUser = iSysUserService.getUserByUsername(principal.getName());
         if (ObjectUtils.isEmpty(sysUser)) {
-            return ApiResult.failed("操作失败");
+            ApiResult.failed("用户不存在");
         }
-        return ApiResult.success(sysUser);
+        Page<SysPost> page = iSysPostService.page(new Page<>(pageNum, pageSize),
+                new LambdaQueryWrapper<SysPost>().eq(SysPost::getUserId, sysUser.getId()));
+        Map<String, Object> map = new HashMap<>(16);
+        map.put("user", sysUser);
+        map.put("posts", page);
+        return ApiResult.success(map);
     }
 
     /**
@@ -124,13 +143,18 @@ public class SysUserController extends BaseController {
      * 登录用户
      *
      * @param  usernameXid
+     * @param  pageNum
+     * @param  pageSize
      * @return ApiResult
      */
     @ApiOperation(value = "获取指定用户信息")
     @PreAuthorize("isAuthenticated()")
     @RequestMapping(value = "/user/{usernameXid}", method = RequestMethod.GET)
-    public ApiResult<SysUser> getUserByUsernameOrId(
-            @ApiParam(name = "usernameXid", value = "用户名或用户ID", required = true) @PathVariable("usernameXid") String usernameXid
+    public ApiResult<Map<String, Object>> getUserByUsernameOrId(
+            @ApiParam(name = "usernameXid", value = "用户名或用户ID", required = true) @PathVariable("usernameXid") String usernameXid,
+            @ApiParam(name = "pageNum", value = "页码:默认1", required = true) @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
+            @ApiParam(name = "pageSize", value = "每页数据量:默认10", required = true) @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize
+
     ) {
         SysUser sysUser = null;
         if (usernameXid.matches("[0-9]{19,}")) {
@@ -139,9 +163,14 @@ public class SysUserController extends BaseController {
             sysUser = iSysUserService.getUserByUsername(usernameXid);
         }
         if (ObjectUtils.isEmpty(sysUser)) {
-            return ApiResult.failed("操作失败");
+            return ApiResult.failed("用户不存在");
         }
-        return ApiResult.success(sysUser);
+        Page<SysPost> page = iSysPostService.page(new Page<>(pageNum, pageSize),
+                new LambdaQueryWrapper<SysPost>().eq(SysPost::getUserId, sysUser.getId()));
+        Map<String, Object> map = new HashMap<>(16);
+        map.put("user", sysUser);
+        map.put("posts", page);
+        return ApiResult.success(map);
     }
 
     /**
