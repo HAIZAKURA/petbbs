@@ -27,7 +27,8 @@ public interface SysPostMapper extends BaseMapper<SysPost> {
      * @param tab
      * @return
      */
-    Page<PostVO> selectListAndPage(@Param("page") Page<PostVO> page, @Param("tab") String tab);
+    Page<PostVO> selectListAndPage(@Param("page") Page<PostVO> page, @Param("tab") String tab,
+                                   @Param("sectionId") Integer sectionId, @Param("tagId") String tagId);
 
     /**
      * 获取详情页推荐

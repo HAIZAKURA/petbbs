@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import run.nya.petbbs.model.dto.CreatePostDTO;
 import run.nya.petbbs.model.entity.SysPost;
 import run.nya.petbbs.model.entity.SysSection;
+import run.nya.petbbs.model.entity.SysTag;
 import run.nya.petbbs.model.entity.SysUser;
 import run.nya.petbbs.model.vo.PostVO;
 
@@ -25,7 +26,7 @@ public interface ISysPostService extends IService<SysPost> {
      * @param  tab
      * @return Page
      */
-    Page<PostVO> getList(Page<PostVO> page, String tab);
+    Page<PostVO> getList(Page<PostVO> page, String tab, Integer sectionId, String tagId);
 
 
     /**
@@ -54,7 +55,7 @@ public interface ISysPostService extends IService<SysPost> {
      * @param  page
      * @return Page
      */
-    Page<SysPost> selectPostByUserId(String userId, Page<SysPost> page);
+    Page<SysPost> selectPostByUserId(Page<SysPost> page, String userId);
 
     /**
      * 获取随机推荐
@@ -81,7 +82,7 @@ public interface ISysPostService extends IService<SysPost> {
      * @param  section
      * @return Page
      */
-    Page<PostVO> selectBySection(Page<PostVO> page, SysSection section);
+//    Page<PostVO> selectBySection(Page<PostVO> page, SysSection section);
 
     /**
      * 关键字检索
@@ -90,6 +91,6 @@ public interface ISysPostService extends IService<SysPost> {
      * @param  page
      * @return Page
      */
-    Page<PostVO> searchByKey(String keyword, Page<PostVO> page);
+    Page<PostVO> searchByKey(Page<PostVO> page, String keyword);
 
 }

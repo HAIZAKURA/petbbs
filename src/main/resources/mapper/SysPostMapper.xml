@@ -18,34 +18,48 @@
     </resultMap>
 
     <select id="selectListAndPage" resultMap="postVO">
-        SELECT
-        t.id,t.title,t.user_id,t.comments,
-        t.view,t.collects,t.top,t.essence,
-        t.create_time ,t.modify_time ,
-        u.username,u.alias, u.avatar
-        FROM sys_post t
+        SELECT p.id,
+               p.title,
+               p.user_id,
+               p.comments,
+               p.view,
+               p.collects,
+               p.top,
+               p.essence,
+               p.create_time,
+               p.modify_time,
+               u.username,
+               u.alias,
+               u.avatar
+        FROM sys_post p
         LEFT JOIN sys_user u
-        ON t.user_id = u.id
+        ON p.user_id = u.id
         <where>
             <if test="tab == 'essence'">
-                t.essence = true
+                p.essence = true
             </if>
             <if test="tab == 'noanswer'">
-                t.comments = 0
+                p.comments = 0
             </if>
             <if test="tab == 'hot'">
-                date(t.create_time) &lt;= date_add(curdate(), interval 1 day)
-                and date(t.create_time) &gt;= date_sub(curdate(), interval 7 day)
+                date(p.create_time) &lt;= date_add(curdate(), interval 1 day)
+                AND date(p.create_time) &gt;= date_sub(curdate(), interval 7 day)
             </if>
             <if test="tab == 'top'">
-                t.top = true
+                p.top = true
+            </if>
+            <if test="sectionId != null">
+                ANd p.section_id = #{sectionId}
+            </if>
+            <if test="tagId != null">
+                AND p.id IN (SELECT post_id FROM sys_post_tag WHERE tag_id = #{tagId})
             </if>
         </where>
         <if test="tab != 'hot'">
-            order by t.top desc, t.create_time desc
+            ORDER BY p.top DESC, p.create_time DESC
         </if>
         <if test="tab == 'hot'">
-            order by t.view desc, t.create_time desc
+            ORDER BY p.view DESC, p.create_time DESC
         </if>
     </select>
 
@@ -64,34 +78,34 @@
                u.alias,
                u.avatar
         FROM sys_post t
-                 LEFT JOIN sys_user u
-                           ON t.user_id = u.id
+        LEFT JOIN sys_user u
+        ON t.user_id = u.id
         WHERE t.section_id = #{section.id}
-        order by t.view desc, t.create_time desc
+        ORDER BY t.view DESC, t.create_time DESC
     </select>
 
     <select id="selectRecommend" resultType="run.nya.petbbs.model.entity.SysPost">
-        select *
-        from sys_post t
-        where t.id != #{id}
-        order by rand(), t.view
+        SELECT *
+        FROM sys_post t
+        WHERE t.id != #{id}
+        ORDER BY rand(), t.view
         limit 10
     </select>
 
     <select id="searchByKey" resultMap="postVO">
         SELECT t.id,
-        t.title,
-        t.user_id,
-        t.comments,
-        t.view,
-        t.collects,
-        t.top,
-        t.essence,
-        t.create_time,
-        t.modify_time,
-        u.username,
-        u.alias,
-        u.avatar
+               t.title,
+               t.user_id,
+               t.comments,
+               t.view,
+               t.collects,
+               t.top,
+               t.essence,
+               t.create_time,
+               t.modify_time,
+               u.username,
+               u.alias,
+               u.avatar
         FROM sys_post t
         LEFT JOIN sys_user u
         ON t.user_id = u.id
@@ -103,6 +117,6 @@
                 or t.title = #{keyword}
             </if>
         </where>
-        order by t.view desc, t.create_time desc
+        ORDER BY t.view DESC, t.create_time DESC
     </select>
 </mapper>

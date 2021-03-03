@@ -72,9 +72,11 @@ secure:
       - /api/friends
       - /api/billboard
       - /api/section
+      - /api/section/**
       - /api/tag
-      - /api/tag/**
       - /api/post
+      - /api/post/**
+      - /api/search
 
 logging:
   level:

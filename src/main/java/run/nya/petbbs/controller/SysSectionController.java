@@ -1,5 +1,6 @@
 package run.nya.petbbs.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -15,7 +16,6 @@ import run.nya.petbbs.service.ISysSectionService;
 import javax.annotation.Resource;
 import javax.validation.Valid;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -32,20 +32,33 @@ public class SysSectionController extends BaseController {
     private ISysSectionService iSysSectionService;
 
     /**
-     * 获取话题专栏
+     * 获取所有专栏
      *
      * @param  pageNum
      * @param  pageSize
      * @return ApiResult
      */
-    @ApiOperation(value = "获取话题专栏")
+    @ApiOperation(value = "获取所有专栏")
     @RequestMapping(value = "/section", method = RequestMethod.GET)
-    public ApiResult<Page<SysSection>> getSection(
+    public ApiResult<Page<SysSection>> getSections(
             @ApiParam(name = "pageNum", value = "页码:默认0", required = true) @RequestParam(value = "pageNum", defaultValue = "0") Integer pageNum,
             @ApiParam(name = "pageSize", value = "每页数据量:默认10", required = true) @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize
     ) {
         Page<SysSection> page = iSysSectionService.page(new Page<>(pageNum, pageSize), null);
         return ApiResult.success(page);
+    }
+
+    @RequestMapping(value = "/section/{title}", method = RequestMethod.GET)
+    public ApiResult<SysSection> getSection(
+            @ApiParam(name = "title", value = "专栏标题", required = true) @PathVariable("title") String title
+    ) {
+        LambdaQueryWrapper<SysSection> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(SysSection::getTitle, title);
+        SysSection section = iSysSectionService.getOne(wrapper);
+        if (ObjectUtils.isEmpty(section)) {
+            return ApiResult.failed("专栏不存在");
+        }
+        return ApiResult.success(section);
     }
 
     /**

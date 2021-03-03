@@ -67,9 +67,9 @@ public class ISysPostServiceImpl extends ServiceImpl<SysPostMapper, SysPost> imp
      * @return Page
      */
     @Override
-    public Page<PostVO> getList(Page<PostVO> page, String tab) {
+    public Page<PostVO> getList(Page<PostVO> page, String tab, Integer sectionId, String tagId) {
         // 查询话题
-        Page<PostVO> iPage = baseMapper.selectListAndPage(page, tab);
+        Page<PostVO> iPage = baseMapper.selectListAndPage(page, tab, sectionId, tagId);
         // 查询话题标签
         iPage.getRecords().forEach(post -> {
             List<SysPostTag> postTags = iSysPostTagService.selectByPostId(post.getId());
@@ -147,7 +147,7 @@ public class ISysPostServiceImpl extends ServiceImpl<SysPostMapper, SysPost> imp
      * @return Page
      */
     @Override
-    public Page<SysPost> selectPostByUserId(String userId, Page<SysPost> page) {
+    public Page<SysPost> selectPostByUserId(Page<SysPost> page, String userId) {
         QueryWrapper<SysPost> wrapper = new QueryWrapper<>();
         wrapper.lambda().eq(SysPost::getUserId, userId);
         Page<SysPost> postPage = baseMapper.selectPage(page, wrapper);
@@ -201,10 +201,10 @@ public class ISysPostServiceImpl extends ServiceImpl<SysPostMapper, SysPost> imp
      * @param  section
      * @return Page
      */
-    @Override
-    public Page<PostVO> selectBySection(Page<PostVO> page, SysSection section) {
-        return baseMapper.selectBySection(page, section);
-    }
+//    @Override
+//    public Page<PostVO> selectBySection(Page<PostVO> page, SysSection section) {
+//        return baseMapper.selectBySection(page, section);
+//    }
 
     /**
      * 关键字检索
@@ -214,7 +214,7 @@ public class ISysPostServiceImpl extends ServiceImpl<SysPostMapper, SysPost> imp
      * @return Page
      */
     @Override
-    public Page<PostVO> searchByKey(String keyword, Page<PostVO> page) {
+    public Page<PostVO> searchByKey(Page<PostVO> page, String keyword) {
         return baseMapper.searchByKey(page, keyword);
     }
 
