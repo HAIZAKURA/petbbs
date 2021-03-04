@@ -33,7 +33,7 @@ public class QiniuUtil {
      * @return Map
      */
     public Map<String, String> uploadImg(QiniuConfig qiniuConfig, byte[] uploadBytes, String key) {
-        Map<String, String> res = new HashMap<>();
+        Map<String, String> res = new HashMap<>(16);
         Configuration cfg = new Configuration(Region.autoRegion());
         UploadManager uploadManager = new UploadManager(cfg);
         String accessKey = qiniuConfig.getAccesskey();
@@ -50,7 +50,7 @@ public class QiniuUtil {
             if (Objects.equals(key, "")) {
                 key = null;
             }
-            String upToken = auth.uploadToken(bucket, key, 3600, putPolicy);
+            String upToken = auth.uploadToken(bucket, key, 3600, null);
 
             try {
                 Response response = uploadManager.put(byteInputStream, key, upToken, null, null);
@@ -78,6 +78,11 @@ public class QiniuUtil {
             ApiAsserts.fail("上传失败");
             ex.printStackTrace();
         }
+        return res;
+    }
+
+    public Map<String, String> uploadVideo(QiniuConfig qiniuConfig, byte[] uploadBytes, String key) {
+        Map<String, String> res = new HashMap<>(16);
         return res;
     }
 
