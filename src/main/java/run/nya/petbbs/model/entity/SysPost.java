@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 import org.springframework.data.elasticsearch.annotations.DateFormat;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
@@ -24,7 +25,8 @@ import java.util.Date;
 @AllArgsConstructor
 @Builder
 @TableName("sys_post")
-@Document(indexName = "topic", shards = 1, replicas = 1)
+@Document(indexName = "post", shards = 1, replicas = 1)
+@Accessors(chain = true)
 public class SysPost implements Serializable {
 
     private static final long serialVersionUID = -1080216882051222464L;
