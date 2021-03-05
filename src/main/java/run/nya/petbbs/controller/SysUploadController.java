@@ -4,6 +4,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -30,9 +31,6 @@ import java.util.Objects;
 public class SysUploadController extends BaseController {
 
     @Resource
-    private QiniuUtil qiniuUtil;
-
-    @Resource
     private IQiniuConfigService iQiniuConfigService;
 
     /**
@@ -54,6 +52,7 @@ public class SysUploadController extends BaseController {
     ) {
         Map<String, String> map = new HashMap<>(16);
         QiniuConfig config = iQiniuConfigService.getQiniuConfig();
+        QiniuUtil qiniuUtil = new QiniuUtil();
         byte[] bytes = null;
         try {
             bytes = file.getBytes();
@@ -67,6 +66,9 @@ public class SysUploadController extends BaseController {
             map = qiniuUtil.uploadVideo(config, bytes, name);
         } else {
             return ApiResult.failed("文件类型错误");
+        }
+        if (ObjectUtils.isEmpty(map)) {
+            return ApiResult.failed("文件上传失败");
         }
         return ApiResult.success(map);
     }
