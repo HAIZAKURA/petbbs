@@ -6,7 +6,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
 import run.nya.petbbs.mapper.SysCommentMapper;
+import run.nya.petbbs.mapper.SysCommentQuoteMapper;
 import run.nya.petbbs.mapper.SysPostMapper;
 import run.nya.petbbs.model.dto.CreateCommentDTO;
 import run.nya.petbbs.model.entity.SysComment;
@@ -20,6 +22,7 @@ import run.nya.petbbs.service.ISysCommentService;
 import run.nya.petbbs.service.ISysPostService;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -46,6 +49,9 @@ public class ISysCommentServiceImpl extends ServiceImpl<SysCommentMapper, SysCom
     @Resource
     private SysCommentMapper sysCommentMapper;
 
+    @Resource
+    private SysCommentQuoteMapper sysCommentQuoteMapper;
+
     /**
      * 创建评论
      *
@@ -62,6 +68,15 @@ public class ISysCommentServiceImpl extends ServiceImpl<SysCommentMapper, SysCom
                 .createTime(new Date())
                 .build();
         baseMapper.insert(comment);
+        if (!ObjectUtils.isEmpty(dto.getQuoteIds())) {
+            for (String quoteId : dto.getQuoteIds()) {
+                SysCommentQuote commentQuote = SysCommentQuote.builder()
+                        .quoteId(quoteId)
+                        .commentId(comment.getId())
+                        .build();
+                sysCommentQuoteMapper.insert(commentQuote);
+            }
+        }
         SysPost sysPost = iSysPostService.getById(dto.getPostId());
         Integer newComments = sysPost.getComments() + 1;
         sysPostMapper.updateById(sysPost.setComments(newComments));
@@ -82,7 +97,10 @@ public class ISysCommentServiceImpl extends ServiceImpl<SysCommentMapper, SysCom
             List<SysCommentQuote> commentQuotes = iSysCommentQuoteService.selectByCommentId(comment.getId());
             if (!commentQuotes.isEmpty()) {
                 List<String> quoteIds = commentQuotes.stream().map(SysCommentQuote::getQuoteId).collect(Collectors.toList());
-                List<QuoteVO> quotes = sysCommentMapper.selectQuotesByIds(quoteIds);
+                List<QuoteVO> quotes = new ArrayList<>();
+                quoteIds.forEach(id -> {
+                    quotes.add(sysCommentMapper.selectQuotesById(id));
+                });
                 comment.setQuotes(quotes);
             }
         });

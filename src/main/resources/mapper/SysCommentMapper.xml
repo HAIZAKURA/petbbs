@@ -32,9 +32,10 @@
         LEFT JOIN sys_user u
         ON c.user_id = u.id
         WHERE c.post_id = #{postId}
+        ORDER BY c.create_time ASC
     </select>
     
-    <select id="selectQuotesByIds" resultMap="quoteVO">
+    <select id="selectQuotesById" resultMap="quoteVO">
         SELECT c.id,
                c.content,
                c.user_id,
@@ -44,6 +45,7 @@
         FROM sys_comment c
         LEFT JOIN sys_user u
         ON c.user_id = u.id
-        WHERE c.id IN #{commentIds}
+        WHERE c.id = #{commentId}
+        ORDER BY c.create_time ASC
     </select>
 </mapper>

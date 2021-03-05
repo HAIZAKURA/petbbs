@@ -76,6 +76,7 @@ secure:
       - /api/tag
       - /api/post
       - /api/post/**
+      - /api/comment
       - /api/search
 
 logging:

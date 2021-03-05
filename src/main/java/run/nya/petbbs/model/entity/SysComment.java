@@ -38,7 +38,7 @@ public class SysComment implements Serializable {
     private String postId;
 
     @Field(type = FieldType.Keyword)
-    @TableField("userId")
+    @TableField("user_id")
     private String userId;
 
     @Field(analyzer = "ik_max_word", type = FieldType.Text)

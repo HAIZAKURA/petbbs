@@ -22,7 +22,7 @@ public interface SysCommentMapper extends BaseMapper<SysComment> {
 
     Page<CommentVO> selectListAndPage(@Param("page") Page<CommentVO> page, @Param("postId") String postId);
 
-    List<QuoteVO> selectQuotesByIds(@Param("commentIds") List<String> commentIds);
+    QuoteVO selectQuotesById(@Param("commentId") String commentId);
 
 
 }
