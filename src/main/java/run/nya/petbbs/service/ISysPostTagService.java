@@ -15,7 +15,7 @@ import java.util.Set;
 public interface ISysPostTagService extends IService<SysPostTag> {
 
     /**
-     * 获取Topic Tag 关联记录
+     * 获取标签ID关联记录
      *
      * @param  postId
      * @return List
@@ -23,7 +23,7 @@ public interface ISysPostTagService extends IService<SysPostTag> {
     List<SysPostTag> selectByPostId(String postId);
 
     /**
-     * 获取标签换脸话题ID集合
+     * 获取标签关联话题ID集合
      *
      * @param  id
      * @return Set
