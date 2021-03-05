@@ -6,7 +6,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 import run.nya.petbbs.common.api.ApiResult;
@@ -93,13 +92,15 @@ public class SysUserController extends BaseController {
     public ApiResult<Object> active(@Valid @RequestBody ActiveDTO dto) {
         SysUser sysUser = iSysUserService.getUserByUsername(dto.getUser());
         if (ObjectUtils.isEmpty(sysUser)) {
-            ApiResult.failed("用户不存在");
+            return ApiResult.failed("用户不存在");
         }
         String activeCode = (String) redisService.get("activeCode[" + dto.getUser() + "]");
         if (sysUser.getActive() && ObjectUtils.isEmpty(activeCode)) {
             return ApiResult.success(null, "已激活");
         }
-        Assert.isTrue(activeCode.equals(dto.getCode()), "激活码错误");
+        if (!activeCode.equals(dto.getCode())) {
+            return ApiResult.failed("激活码错误");
+        }
         sysUser.setActive(true);
         if (iSysUserService.updateById(sysUser)) {
             redisService.del("activeCode[" + dto.getUser() + "]");
@@ -128,7 +129,7 @@ public class SysUserController extends BaseController {
     ) {
         SysUser sysUser = iSysUserService.getUserByUsername(principal.getName());
         if (ObjectUtils.isEmpty(sysUser)) {
-            ApiResult.failed("用户不存在");
+            return ApiResult.failed("用户不存在");
         }
         Page<SysPost> page = iSysPostService.page(new Page<>(pageNum, pageSize),
                 new LambdaQueryWrapper<SysPost>().eq(SysPost::getUserId, sysUser.getId()));

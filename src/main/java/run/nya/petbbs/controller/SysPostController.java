@@ -6,7 +6,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.util.Assert;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 import run.nya.petbbs.common.api.ApiResult;
 import run.nya.petbbs.model.dto.CreatePostDTO;
@@ -86,9 +86,11 @@ public class SysPostController extends BaseController {
     @ApiOperation(value = "创建话题")
     @PreAuthorize("isAuthenticated()")
     @RequestMapping(value = "/post", method = RequestMethod.POST)
-    public ApiResult<SysPost> createPost(@RequestBody CreatePostDTO dto, Principal principal) {
+    public ApiResult<SysPost> create(@RequestBody CreatePostDTO dto, Principal principal) {
         SysUser sysUser = iSysUserService.getUserByUsername(principal.getName());
-        Assert.isTrue(sysUser.getActive(), "账号未激活");
+        if (!sysUser.getActive()) {
+            return ApiResult.failed("账号未激活");
+        }
         SysPost sysPost = iSysPostService.create(dto, sysUser);
         return ApiResult.success(sysPost);
     }
@@ -104,9 +106,29 @@ public class SysPostController extends BaseController {
     @ApiOperation(value = "修改话题")
     @PreAuthorize("isAuthenticated()")
     @RequestMapping(value = "/post", method = RequestMethod.PUT)
-    public ApiResult<SysPost> updatePost(@Valid @RequestBody SysPost sysPost, Principal principal) {
+    public ApiResult<SysPost> update(@Valid @RequestBody SysPost sysPost, Principal principal) {
         SysUser sysUser = iSysUserService.getUserByUsername(principal.getName());
-        Assert.isTrue(sysUser.getId().equals(sysPost.getUserId()), "不能修改非本人话题");
+        if (!sysUser.getId().equals(sysPost.getUserId())) {
+            return ApiResult.failed("不能修改别人的话题");
+        }
+        sysPost.setModifyTime(new Date());
+        sysPost.setContent(EmojiParser.parseToAliases(sysPost.getContent()));
+        iSysPostService.updateById(sysPost);
+        return ApiResult.success(sysPost);
+    }
+
+    /**
+     * 修改话题
+     * 超级管理员
+     * 管理员
+     *
+     * @param  sysPost
+     * @return ApiResult
+     */
+    @ApiOperation(value = "管理员修改话题")
+    @PreAuthorize("hasRole('ROLE_SUPERADMIN') or hasRole('ROLE_ADMIN')")
+    @RequestMapping(value = "/admin/post", method = RequestMethod.PUT)
+    public ApiResult<SysPost> updateByAdmin(@Valid @RequestBody SysPost sysPost) {
         sysPost.setModifyTime(new Date());
         sysPost.setContent(EmojiParser.parseToAliases(sysPost.getContent()));
         iSysPostService.updateById(sysPost);
@@ -123,16 +145,42 @@ public class SysPostController extends BaseController {
     @ApiOperation(value = "删除话题")
     @PreAuthorize("isAuthenticated()")
     @RequestMapping(value = "/post/{id}", method = RequestMethod.DELETE)
-    public ApiResult<String> deletePost(
+    public ApiResult<String> delete(
             @ApiParam(name = "id", value = "话题ID", required = true) @PathVariable("id") String id,
             Principal principal
     ) {
         SysUser sysUser = iSysUserService.getUserByUsername(principal.getName());
         SysPost sysPost = iSysPostService.getById(id);
-        Assert.notNull(sysPost, "话题不存在");
-        Assert.isTrue(sysPost.getUserId().equals(sysUser.getId()), "不能删除非本人话题");
+        if (ObjectUtils.isEmpty(sysPost)) {
+            return ApiResult.failed("话题不存在");
+        }
+        if (!sysPost.getUserId().equals(sysUser.getId())) {
+            return ApiResult.failed("不能删除别人的话题");
+        }
         iSysPostService.removeById(id);
-        return ApiResult.success(null, "删除成功");
+        return ApiResult.success("删除成功");
+    }
+
+    /**
+     * 删除话题
+     * 超级管理员
+     * 管理员
+     *
+     * @param  id
+     * @return ApiResult
+     */
+    @ApiOperation(value = "管理员删除话题")
+    @PreAuthorize("hasRole('ROLE_SUPERADMIN') or hasRole('ROLE_ADMIN')")
+    @RequestMapping(value = "/admin/post/{id}", method = RequestMethod.DELETE)
+    public ApiResult<String> deleteByAdmin(
+            @ApiParam(name = "id", value = "话题ID", required = true) @PathVariable("id") String id
+    ) {
+        SysPost sysPost = iSysPostService.getById(id);
+        if (ObjectUtils.isEmpty(sysPost)) {
+            return ApiResult.failed("话题不存在");
+        }
+        iSysPostService.removeById(id);
+        return ApiResult.success("删除成功");
     }
 
     /**
@@ -143,7 +191,7 @@ public class SysPostController extends BaseController {
      */
     @ApiOperation(value = "获取推荐话题列表")
     @RequestMapping(value = "/post/recommend", method = RequestMethod.GET)
-    public ApiResult<List<SysPost>> getRecommendPost(
+    public ApiResult<List<SysPost>> recommend(
             @ApiParam(name = "postId", value = "话题ID", required = true) @RequestParam("postId") String id
     ) {
         List<SysPost> posts = iSysPostService.getRecommend(id);
