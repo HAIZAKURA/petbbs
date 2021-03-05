@@ -50,7 +50,7 @@ public class QiniuUtil {
             if (Objects.equals(key, "")) {
                 key = null;
             }
-            String upToken = auth.uploadToken(bucket, key, 3600, null);
+            String upToken = auth.uploadToken(bucket, key, 3600, putPolicy);
 
             try {
                 Response response = uploadManager.put(byteInputStream, key, upToken, null, null);
@@ -74,15 +74,65 @@ public class QiniuUtil {
                     ex2.printStackTrace();
                 }
             }
-        } catch (Exception ex) {
+        } catch (Exception e) {
             ApiAsserts.fail("上传失败");
-            ex.printStackTrace();
+            e.printStackTrace();
         }
         return res;
     }
 
+    /**
+     * 上传视频
+     *
+     * @param  qiniuConfig
+     * @param  uploadBytes
+     * @param  key
+     * @return Map
+     */
     public Map<String, String> uploadVideo(QiniuConfig qiniuConfig, byte[] uploadBytes, String key) {
         Map<String, String> res = new HashMap<>(16);
+        Configuration cfg = new Configuration(Region.autoRegion());
+        UploadManager uploadManager = new UploadManager(cfg);
+        String accessKey = qiniuConfig.getAccesskey();
+        String secretKey = qiniuConfig.getSecretkey();
+        String bucket = qiniuConfig.getBucket();
+        String host = qiniuConfig.getHost();
+        Boolean ssl = qiniuConfig.getUsessl();
+
+        try {
+            ByteArrayInputStream byteInputStream = new ByteArrayInputStream(uploadBytes);
+            Auth auth = Auth.create(accessKey, secretKey);
+            StringMap putPolicy = new StringMap();
+            if (Objects.equals(key, "")) {
+                key = null;
+            }
+            String upToken = auth.uploadToken(bucket, key, 3600, putPolicy);
+
+            try {
+                Response response = uploadManager.put(byteInputStream, key, upToken, null, null);
+                DefaultPutRet putRet = JSON.parseObject(response.bodyString(), DefaultPutRet.class);
+                res.put("hash", putRet.hash);
+                res.put("key", putRet.key);
+                if (ssl) {
+                    res.put("url", "https://" + host + "/" + putRet.key);
+                } else {
+                    res.put("url", "http://" + host + "/" + putRet.key);
+                }
+
+            } catch (QiniuException ex) {
+                ApiAsserts.fail("上传失败");
+                Response r = ex.response;
+                System.err.println(r.toString());
+                try {
+                    System.err.println(r.bodyString());
+                } catch (QiniuException ex2) {
+                    ex2.printStackTrace();
+                }
+            }
+        } catch (Exception e) {
+            ApiAsserts.fail("上传失败");
+            e.printStackTrace();
+        }
         return res;
     }
 
