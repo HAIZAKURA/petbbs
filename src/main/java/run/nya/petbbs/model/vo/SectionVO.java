@@ -13,14 +13,8 @@ import run.nya.petbbs.model.entity.SysSection;
 @Data
 public class SectionVO extends SysSection {
 
-    /**
-     * 话题统计
-     */
     private Integer posts;
 
-    /**
-     * 关注数
-     */
 //    private Integer followers;
 
 }
