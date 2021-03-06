@@ -110,6 +110,28 @@ public class SysUserController extends BaseController {
     }
 
     /**
+     * 重新发送激活码
+     *
+     * @param  name
+     * @param  email
+     * @return ApiResult
+     */
+    @ApiOperation(value = "重新发送激活码")
+    @RequestMapping(value = "/reactive", method = RequestMethod.GET)
+    public ApiResult<String> reActive(
+            @RequestParam("name") String name,
+            @RequestParam("email") String email
+    ) {
+        try {
+            iSysUserService.reActive(name, email);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ApiResult.success("发送失败");
+        }
+        return ApiResult.success("发送失败");
+    }
+
+    /**
      * 获取当前用户信息
      * 登录用户
      *

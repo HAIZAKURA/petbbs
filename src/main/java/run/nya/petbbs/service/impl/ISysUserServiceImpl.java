@@ -3,6 +3,7 @@ package run.nya.petbbs.service.impl;
 import cn.hutool.core.thread.ThreadUtil;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.URLUtil;
+import cn.hutool.extra.mail.MailAccount;
 import cn.hutool.extra.mail.MailUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -23,16 +24,19 @@ import org.springframework.util.ObjectUtils;
 import run.nya.petbbs.common.exception.ApiAsserts;
 import run.nya.petbbs.config.redis.RedisService;
 import run.nya.petbbs.config.security.util.JwtTokenUtil;
+import run.nya.petbbs.mapper.SysConfigMapper;
 import run.nya.petbbs.mapper.SysPostMapper;
 import run.nya.petbbs.mapper.SysSectionMapper;
 import run.nya.petbbs.mapper.SysUserMapper;
 import run.nya.petbbs.model.dto.LoginDTO;
 import run.nya.petbbs.model.dto.RegisterDTO;
+import run.nya.petbbs.model.entity.SysConfig;
 import run.nya.petbbs.model.entity.SysPost;
 import run.nya.petbbs.model.entity.SysSection;
 import run.nya.petbbs.model.entity.SysUser;
 import run.nya.petbbs.model.vo.ProfileVO;
 import run.nya.petbbs.service.ISysUserService;
+import run.nya.petbbs.util.SysMailUtil;
 
 import java.util.Date;
 
@@ -52,8 +56,11 @@ public class ISysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> imp
     @Autowired
     private SysSectionMapper sysSectionMapper;
 
-    @Value("${web.domain}")
-    private String domain;
+    @Autowired
+    private SysConfigMapper sysConfigMapper;
+
+//    @Value("${web.domain}")
+//    private String domain;
 
     @Autowired
     private UserDetailsService userDetailsService;
@@ -138,14 +145,19 @@ public class ISysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> imp
         String activeCode = RandomUtil.randomString(8);
         redisService.set("activeCode[" + dto.getName() + "]", activeCode, 30 * 60);
         // 发送邮件
+        String domain = sysConfigMapper
+                .selectOne(new LambdaQueryWrapper<SysConfig>().eq(SysConfig::getItem, "domain"))
+                .getValue();
         String activeUrl = URLUtil.normalize(domain + "/#?user=" + dto.getName() + "&code=" + activeCode);
         String content = "请在30分钟内激活您的账号，如非本人操作，请忽略 </br > " +
                 "<a href=\"" + activeUrl + "\" target =\"_blank\" '>点击激活账号</a>";
         ThreadUtil.execAsync(() -> {
             try {
-                MailUtil.send(dto.getEmail(), "账号激活", content, true);
+                SysMailUtil sysMailUtil = new SysMailUtil();
+                sysMailUtil.sendMail(dto.getEmail(), "账号激活", content, true);
+//                MailUtil.send(dto.getEmail(), "账号激活", content, true);
             } catch (Exception e) {
-                ApiAsserts.fail("邮箱账号错误！");
+                ApiAsserts.fail("发送失败！");
             }
         });
         return addUser;
@@ -169,6 +181,32 @@ public class ISysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> imp
         Integer sectionCount = sysSectionMapper.selectCount(new LambdaQueryWrapper<SysSection>().eq(SysSection::getUserId, id));
         profileVO.setSections(sectionCount);
         return profileVO;
+    }
+
+    /**
+     * 重新发送激活码
+     *
+     * @param name
+     * @param email
+     */
+    @Override
+    public void reActive(String name, String email) {
+        String activeCode = (String) redisService.get("activeCode[" + name + "]");
+        String domain = sysConfigMapper
+                .selectOne(new LambdaQueryWrapper<SysConfig>().eq(SysConfig::getItem, "domain"))
+                .getValue();
+        String activeUrl = URLUtil.normalize(domain + "/#?user=" + name + "&code=" + activeCode);
+        String content = "请在30分钟内激活您的账号，如非本人操作，请忽略 </br > " +
+                "<a href=\"" + activeUrl + "\" target =\"_blank\" '>点击激活账号</a>";
+        ThreadUtil.execAsync(() -> {
+            try {
+                SysMailUtil sysMailUtil = new SysMailUtil();
+                sysMailUtil.sendMail(email, "账号激活", content, true);
+//                MailUtil.send(dto.getEmail(), "账号激活", content, true);
+            } catch (Exception e) {
+                ApiAsserts.fail("发送失败！");
+            }
+        });
     }
 
 }

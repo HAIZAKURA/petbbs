@@ -45,4 +45,12 @@ public interface ISysUserService extends IService<SysUser> {
      */
     ProfileVO getUserProfile(String id);
 
+    /**
+     * 重新发送激活码
+     *
+     * @param name
+     * @param email
+     */
+    void reActive(String name, String email);
+
 }

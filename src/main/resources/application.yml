@@ -67,6 +67,7 @@ secure:
       - /druid/**
       - /api/login
       - /api/register
+      - /api/reactive
       - /api/active
       - /api/logout
       - /api/friends
