@@ -79,6 +79,7 @@ secure:
       - /api/post/**
       - /api/comment
       - /api/search
+      - /api/info
 
 logging:
   level:
