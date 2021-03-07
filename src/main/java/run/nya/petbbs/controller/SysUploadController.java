@@ -38,7 +38,6 @@ public class SysUploadController extends BaseController {
      * 登录用户
      *
      * @param  file
-     * @param  name
      * @param  type
      * @return ApiResult
      */
@@ -47,7 +46,6 @@ public class SysUploadController extends BaseController {
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
     public ApiResult<Map<String, String>> upload(
             @ApiParam(name = "file", value = "文件", required = true) @RequestParam("file") MultipartFile file,
-            @ApiParam(name = "name", value = "名称", required = true) @RequestParam("name") String name,
             @ApiParam(name = "type", value = "类型", required = true) @RequestParam("type") String type
     ) {
         Map<String, String> map = new HashMap<>(16);
@@ -60,10 +58,10 @@ public class SysUploadController extends BaseController {
             e.printStackTrace();
             return ApiResult.failed("文件上传失败");
         }
-        if (Objects.equals(type, "image")) {
-            map = qiniuUtil.uploadImg(config, bytes, name);
+        if (Objects.equals(type, "image") || Objects.equals(type, "avatar")) {
+            map = qiniuUtil.uploadImg(config, bytes, type);
         } else if (Objects.equals(type, "video")) {
-            map = qiniuUtil.uploadVideo(config, bytes, name);
+            map = qiniuUtil.uploadVideo(config, bytes);
         } else {
             return ApiResult.failed("文件类型错误");
         }
