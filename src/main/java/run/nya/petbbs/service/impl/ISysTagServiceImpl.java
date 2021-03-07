@@ -36,6 +36,7 @@ public class ISysTagServiceImpl extends ServiceImpl<SysTagMapper, SysTag> implem
      * @param  tags
      * @return List
      */
+    @Override
     public List<SysTag> addTags(List<String> tags) {
         List<SysTag> tagList = new ArrayList<>();
         for (String tag : tags) {
@@ -59,6 +60,7 @@ public class ISysTagServiceImpl extends ServiceImpl<SysTagMapper, SysTag> implem
      * @param  id
      * @return Page
      */
+    @Override
     public Page<SysPost> selectPostsByTagId(Page<SysPost> postPage, String id) {
         Set<String> ids = iSysPostTagService.selectPostIdsByTagId(id);
         LambdaQueryWrapper<SysPost> wrapper = new LambdaQueryWrapper<>();

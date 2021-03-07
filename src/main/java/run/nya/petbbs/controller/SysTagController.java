@@ -1,5 +1,6 @@
 package run.nya.petbbs.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -87,6 +88,26 @@ public class SysTagController extends BaseController {
             e.printStackTrace();
         }
         return ApiResult.failed("修改失败");
+    }
+
+    /**
+     * 删除标签
+     * 超级管理员
+     * 管理员
+     *
+     * @param  id
+     * @return ApiResult
+     */
+    @ApiOperation(value = "管理员删除标签")
+    @PreAuthorize("hasRole('ROLE_SUPERADMIN') or hasRole('ROLE_ADMIN')")
+    @RequestMapping(value = "/admin/tag/{id}", method = RequestMethod.DELETE)
+    public ApiResult<String> deleteTag(@PathVariable("id") String id) {
+        SysTag sysTag = iSysTagService.getById(id);
+        if (ObjectUtils.isEmpty(sysTag)) {
+            return ApiResult.failed("标签不存在");
+        }
+        iSysTagService.removeById(id);
+        return ApiResult.failed("删除成功");
     }
 
 }
