@@ -191,7 +191,9 @@ public class ISysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> imp
      */
     @Override
     public void reActive(String name, String email) {
-        String activeCode = (String) redisService.get("activeCode[" + name + "]");
+        redisService.del("activeCode[" + name + "]");
+        String activeCode = RandomUtil.randomString(8);
+        redisService.set("activeCode[" + name + "]", activeCode, 30 * 60);
         String domain = sysConfigMapper
                 .selectOne(new LambdaQueryWrapper<SysConfig>().eq(SysConfig::getItem, "domain"))
                 .getValue();
