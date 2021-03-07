@@ -139,7 +139,7 @@ public class SysVideoPostController extends BaseController {
      */
     @ApiOperation(value = "管理员修改视频")
     @PreAuthorize("hasRole('ROLE_SUPERADMIN') or hasRole('ROLE_ADMIN')")
-    @RequestMapping(value = "/video", method = RequestMethod.PUT)
+    @RequestMapping(value = "/admin/video", method = RequestMethod.PUT)
     public ApiResult<SysVideoPost> updateByAdmin(@Valid @RequestBody SysVideoPost videoPost) {
         videoPost.setModifyTime(new Date());
         iSysVideoPostService.updateById(videoPost);
@@ -180,7 +180,7 @@ public class SysVideoPostController extends BaseController {
      */
     @ApiOperation(value = "管理员删除视频")
     @PreAuthorize("hasRole('ROLE_SUPERADMIN') or hasRole('ROLE_ADMIN')")
-    @RequestMapping(value = "/video/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/admin/video/{id}", method = RequestMethod.DELETE)
     public ApiResult<String> deleteByAdmin(@PathVariable("id") String id) {
         SysVideoPost videoPost = iSysVideoPostService.getById(id);
         if (ObjectUtils.isEmpty(videoPost)) {
