@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="run.nya.petbbs.mapper.SysVideoPostMapper">
+    <resultMap id="videoPostVO" type="run.nya.petbbs.model.vo.VideoPostVO">
+        <id column="id" property="id"/>
+        <result column="title" property="title"/>
+        <result column="cover" property="cover" />
+        <result column="content" property="content" />
+        <result column="user_id" property="userId"/>
+        <result column="comments" property="comments"/>
+        <result column="view" property="view"/>
+        <result column="collects" property="collects"/>
+        <result column="create_time" property="createTime"/>
+        <result column="modify_time" property="modifyTime"/>
+        <result column="username" property="username"/>
+        <result column="alias" property="alias"/>
+        <result column="avatar" property="avatar"/>
+    </resultMap>
+
+    <select id="selectListAndPage" resultMap="videoPostVO">
+        SELECT p.id,
+               p.title,
+               p.cover,
+               p.content,
+               p.user_id,
+               p.comments,
+               p.view,
+               p.collects,
+               p.create_time,
+               p.modify_time,
+               u.username,
+               u.alias,
+               u.avatar
+        FROM sys_video_post p
+                LEFT JOIN sys_user u
+                        ON p.user_id = u.id
+        <where>
+            <if test="tab == 'hot'">
+                date(p.create_time) &lt;= date_add(curdate(), interval 1 day)
+                AND date(p.create_time) &gt;= date_sub(curdate(), interval 7 day)
+            </if>
+            <if test="tagId != null">
+                AND p.id IN (SELECT post_id FROM sys_post_tag WHERE tag_id = #{tagId})
+            </if>
+        </where>
+        <if test="tab != 'hot'">
+            ORDER BY p.top DESC, p.create_time DESC
+        </if>
+        <if test="tab == 'hot'">
+            ORDER BY p.view DESC, p.create_time DESC
+        </if>
+    </select>
+
+    <select id="selectRecommend" resultMap="videoPostVO">
+        SELECT p.id,
+               p.title,
+               p.cover,
+               p.content,
+               p.user_id,
+               p.comments,
+               p.view,
+               p.collects,
+               p.create_time,
+               p.modify_time,
+               u.username,
+               u.alias,
+               u.avatar
+        FROM sys_video_post p
+                LEFT JOIN sys_user u
+                        ON p.user_id = u.id
+        WHERE p.id != #{id}
+        ORDER BY rand(), p.view
+        limit 10
+    </select>
+
+    <select id="searchByKey" resultMap="videoPostVO">
+        SELECT p.id,
+               p.title,
+               p.cover,
+               p.content,
+               p.user_id,
+               p.comments,
+               p.view,
+               p.collects,
+               p.create_time,
+               p.modify_time,
+               u.username,
+               u.alias,
+               u.avatar
+        FROM sys_video_post p
+                 LEFT JOIN sys_user u
+                           ON p.user_id = u.id
+        <where>
+            <if test="keyword!=null">
+                and p.title like CONCAT('%','${keyword}')
+                or p.title like CONCAT('${keyword}','%')
+                or p.title like CONCAT('%','${keyword}','%')
+                or p.title = #{keyword}
+            </if>
+        </where>
+        ORDER BY p.view DESC, p.create_time DESC
+    </select>
+
+</mapper>
