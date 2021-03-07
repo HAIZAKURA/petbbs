@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="run.nya.petbbs.mapper.SysFollowMapper">
+    <resultMap id="followVO" type="run.nya.petbbs.model.vo.FollowVO">
+        <id column="id" property="id"/>
+        <result column="username" property="username"/>
+        <result column="avatar" property="avatar" />
+        <result column="alias" property="alias" />
+        <result column="bio" property="bio"/>
+    </resultMap>
+
+    <select id="getFansPage" resultMap="followVO">
+        SELECT u.id,
+               u.username,
+               u.avatar,
+               u.alias,
+               u.bio
+        FROM sys_user u
+        WHERE u.id IN (SELECT user_id FROM sys_follow WHERE follow_id = #{userId})
+    </select>
+
+    <select id="getFollowPage" resultMap="followVO">
+        SELECT u.id,
+               u.username,
+               u.avatar,
+               u.alias,
+               u.bio
+        FROM sys_user u
+        WHERE u.id IN (SELECT follow_id FROM sys_follow WHERE user_id = #{userId})
+    </select>
+
+</mapper>
