@@ -46,17 +46,8 @@ public class QiniuUtil {
             ByteArrayInputStream byteInputStream = new ByteArrayInputStream(uploadBytes);
             Auth auth = Auth.create(accessKey, secretKey);
             StringMap putPolicy = new StringMap();
-            String fops;
-            if (Objects.equals(type, "avatar")) {
-                fops = "imageView2/1/w/100/h/100/format/webp/q/60";
-            } else {
-                fops = "imageView2/0/format/webp/q/60";
-            }
-            String save = UrlSafeBase64.encodeToString("petbbs:${etag}${ext}");
             putPolicy.put("mimeLimit", "image/*");
-            putPolicy.put("fsizeLimit", 10485760);
-            putPolicy.put("persistentOps", fops + "|saveas/" + save);
-            putPolicy.put("persistentPipeline", "mypipeline");
+            putPolicy.put("fsizeLimit", 20971520);
             putPolicy.put("saveKey", "$(etag)${ext}");
             String upToken = auth.uploadToken(bucket, null, 3600, putPolicy);
 
