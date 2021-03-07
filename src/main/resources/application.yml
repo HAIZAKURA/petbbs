@@ -7,8 +7,8 @@ web:
 spring:
   servlet:
     multipart:
-      max-file-size: 5MB
-      max-request-size: 100MB
+      max-file-size: 100MB
+      max-request-size: 200MB
 
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
@@ -77,6 +77,8 @@ secure:
       - /api/tag
       - /api/post
       - /api/post/**
+      - /api/video
+      - /api/video/**
       - /api/comment
       - /api/search
       - /api/info
