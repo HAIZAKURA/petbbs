@@ -93,7 +93,9 @@ public class ISysPostServiceImpl extends ServiceImpl<SysPostMapper, SysPost> imp
     public Map<String, Object> viewPost(String id) {
         Map<String, Object> map = new HashMap<>(16);
         SysPost post = baseMapper.selectById(id);
-        Assert.notNull(post, "话题不存在");
+        if (ObjectUtils.isEmpty(post)) {
+            ApiAsserts.fail("话题不存在");
+        }
         // 查询话题
         post.setView(post.getView() + 1);
         baseMapper.updateById(post);
@@ -176,7 +178,9 @@ public class ISysPostServiceImpl extends ServiceImpl<SysPostMapper, SysPost> imp
     @Override
     public SysPost create(CreatePostDTO dto, SysUser sysUser) {
         SysPost postIsExist = baseMapper.selectOne(new LambdaQueryWrapper<SysPost>().eq(SysPost::getTitle, dto.getTitle()));
-        Assert.isNull(postIsExist, "话题已存在");
+        if (!ObjectUtils.isEmpty(postIsExist)) {
+            ApiAsserts.fail("话题已存在");
+        }
         SysPost post = SysPost.builder()
                 .userId(sysUser.getId())
                 .title(dto.getTitle())
