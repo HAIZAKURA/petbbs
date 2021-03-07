@@ -51,7 +51,7 @@ public class SysPostController extends BaseController {
      */
     @ApiOperation(value = "获取话题列表")
     @RequestMapping(value = "/post", method = RequestMethod.GET)
-    public ApiResult<Page<PostVO>> getPostList(
+    public ApiResult<Page<PostVO>> getList(
             @ApiParam(name = "tab", value = "类别:latest|最新;hot|热门;essence|加精;top|置顶;默认latest", required = true) @RequestParam(value = "tab", defaultValue = "latest") String tab,
             @ApiParam(name = "sid", value = "专栏ID", required = false) @RequestParam(value = "sid", required = false) Integer sectionId,
             @ApiParam(name = "tid", value = "标签ID", required = false) @RequestParam(value = "tid", required = false) String tagId,
