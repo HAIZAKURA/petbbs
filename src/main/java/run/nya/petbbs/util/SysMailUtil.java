@@ -18,6 +18,14 @@ public class SysMailUtil {
     @Resource
     private SysConfigMapper sysConfigMapper;
 
+    /**
+     * 发送邮件
+     *
+     * @param to
+     * @param subject
+     * @param content
+     * @param isHtml
+     */
     public void sendMail(String to, String subject, String content, Boolean isHtml) {
         MailAccount account = new MailAccount();
         String mailFrom = sysConfigMapper
