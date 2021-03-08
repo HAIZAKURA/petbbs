@@ -14,6 +14,7 @@ import run.nya.petbbs.model.entity.SysPost;
 import run.nya.petbbs.model.entity.SysUser;
 import run.nya.petbbs.model.vo.PostVO;
 import run.nya.petbbs.service.ISysPostService;
+import run.nya.petbbs.service.ISysSensitiveWordService;
 import run.nya.petbbs.service.ISysUserService;
 
 import javax.annotation.Resource;
@@ -38,6 +39,9 @@ public class SysPostController extends BaseController {
 
     @Resource
     private ISysUserService iSysUserService;
+
+    @Resource
+    private ISysSensitiveWordService iSysSensitiveWordService;
 
     /**
      * 获取话题列表
@@ -91,6 +95,12 @@ public class SysPostController extends BaseController {
         if (!sysUser.getActive()) {
             return ApiResult.failed("账号未激活");
         }
+        String content = dto.getContent();
+        List<String> words = iSysSensitiveWordService.getWords();
+        for (String word : words) {
+            content = content.replace(word, "***");
+        }
+        dto.setContent(content);
         SysPost sysPost = iSysPostService.create(dto, sysUser);
         return ApiResult.success(sysPost);
     }

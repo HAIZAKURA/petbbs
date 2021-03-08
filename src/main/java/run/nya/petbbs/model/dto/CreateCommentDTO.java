@@ -16,7 +16,7 @@ public class CreateCommentDTO implements Serializable {
 
     private String postId;
 
-    private String[] quoteIds;
+    private String quoteId;
 
     private String content;
 

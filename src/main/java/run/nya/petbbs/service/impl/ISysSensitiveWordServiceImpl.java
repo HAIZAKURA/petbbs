@@ -32,4 +32,9 @@ public class ISysSensitiveWordServiceImpl extends ServiceImpl<SysSensitiveWordMa
         return wordList;
     }
 
+    @Override
+    public List<String> getWords() {
+        return baseMapper.getWords();
+    }
+
 }

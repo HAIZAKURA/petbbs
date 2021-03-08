@@ -14,4 +14,6 @@ public interface ISysSensitiveWordService extends IService<SysSensitiveWord> {
 
     List<SysSensitiveWord> add(List<String> words);
 
+    List<String> getWords();
+
 }

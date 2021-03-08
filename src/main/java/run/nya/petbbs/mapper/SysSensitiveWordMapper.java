@@ -5,6 +5,8 @@ import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 import run.nya.petbbs.model.entity.SysSensitiveWord;
 
+import java.util.List;
+
 /**
  * 敏感词
  *
@@ -13,4 +15,7 @@ import run.nya.petbbs.model.entity.SysSensitiveWord;
 @Mapper
 @Repository
 public interface SysSensitiveWordMapper extends BaseMapper<SysSensitiveWord> {
+
+    List<String> getWords();
+
 }

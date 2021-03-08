@@ -68,14 +68,12 @@ public class ISysCommentServiceImpl extends ServiceImpl<SysCommentMapper, SysCom
                 .createTime(new Date())
                 .build();
         baseMapper.insert(comment);
-        if (!ObjectUtils.isEmpty(dto.getQuoteIds())) {
-            for (String quoteId : dto.getQuoteIds()) {
-                SysCommentQuote commentQuote = SysCommentQuote.builder()
-                        .quoteId(quoteId)
-                        .commentId(comment.getId())
-                        .build();
-                sysCommentQuoteMapper.insert(commentQuote);
-            }
+        if (!ObjectUtils.isEmpty(dto.getQuoteId())) {
+            SysCommentQuote commentQuote = SysCommentQuote.builder()
+                    .quoteId(dto.getQuoteId())
+                    .commentId(comment.getId())
+                    .build();
+            sysCommentQuoteMapper.insert(commentQuote);
         }
         SysPost sysPost = iSysPostService.getById(dto.getPostId());
         Integer newComments = sysPost.getComments() + 1;

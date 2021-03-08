@@ -16,6 +16,7 @@ import run.nya.petbbs.service.*;
 
 import javax.annotation.Resource;
 import java.security.Principal;
+import java.util.List;
 
 /**
  * 评论控制器
@@ -35,6 +36,9 @@ public class SysCommentController extends BaseController {
 
     @Resource
     private ISysNotifyService iSysNotifyService;
+
+    @Resource
+    private ISysSensitiveWordService iSysSensitiveWordService;
 
     /**
      * 获取评论列表
@@ -72,6 +76,12 @@ public class SysCommentController extends BaseController {
         if (!user.getActive()) {
             return ApiResult.failed("账号未激活");
         }
+        String content = dto.getContent();
+        List<String> words = iSysSensitiveWordService.getWords();
+        for (String word : words) {
+            content = content.replace(word, "***");
+        }
+        dto.setContent(content);
         SysComment sysComment = iSysCommentService.create(dto, user);
         iSysNotifyService.commentNotify(dto.getPostId(), sysComment.getId());
         return ApiResult.success(sysComment);
