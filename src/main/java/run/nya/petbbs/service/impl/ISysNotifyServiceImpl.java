@@ -73,6 +73,37 @@ public class ISysNotifyServiceImpl extends ServiceImpl<SysNotifyMapper, SysNotif
     }
 
     /**
+     * 引用通知
+     *
+     * @param userId
+     * @param postId
+     * @param commentId
+     */
+    @Override
+    public void quoteNotify(String userId, String postId, String commentId) {
+        SysPost sysPost = iSysPostService.getById(postId);
+        SysVideoPost sysVideoPost = iSysVideoPostService.getById(postId);
+        String content = "";
+        String remark = "";
+        if (!ObjectUtils.isEmpty(sysPost)) {
+            content = "有人回复了你的评论哦！";
+            remark = "post." + postId + "|" + "comm." + commentId;
+        } else if (!ObjectUtils.isEmpty(sysVideoPost)) {
+            content = "有人回复了你的评论哦！";
+            remark = "video." + postId + "|" + "comm." + commentId;
+        } else {
+            ApiAsserts.fail("操作失败");
+        }
+        SysNotify notify = SysNotify.builder()
+                .userId(userId)
+                .content(content)
+                .remark(remark)
+                .createTime(new Date())
+                .build();
+        baseMapper.insert(notify);
+    }
+
+    /**
      * 关注通知
      *
      * @param  userId

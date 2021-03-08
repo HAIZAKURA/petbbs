@@ -19,6 +19,7 @@ import run.nya.petbbs.model.vo.CommentVO;
 import run.nya.petbbs.model.vo.QuoteVO;
 import run.nya.petbbs.service.ISysCommentQuoteService;
 import run.nya.petbbs.service.ISysCommentService;
+import run.nya.petbbs.service.ISysNotifyService;
 import run.nya.petbbs.service.ISysPostService;
 
 import javax.annotation.Resource;
@@ -42,6 +43,9 @@ public class ISysCommentServiceImpl extends ServiceImpl<SysCommentMapper, SysCom
 
     @Autowired
     private ISysCommentQuoteService iSysCommentQuoteService;
+
+    @Autowired
+    private ISysNotifyService iSysNotifyService;
 
     @Resource
     private SysPostMapper sysPostMapper;
@@ -74,6 +78,8 @@ public class ISysCommentServiceImpl extends ServiceImpl<SysCommentMapper, SysCom
                     .commentId(comment.getId())
                     .build();
             sysCommentQuoteMapper.insert(commentQuote);
+            SysComment sysComment = baseMapper.selectById(dto.getQuoteId());
+            iSysNotifyService.quoteNotify(sysComment.getUserId(), sysComment.getPostId(), comment.getId());
         }
         SysPost sysPost = iSysPostService.getById(dto.getPostId());
         Integer newComments = sysPost.getComments() + 1;

@@ -15,16 +15,23 @@ public interface ISysNotifyService extends IService<SysNotify> {
      *
      * @param  postId
      * @param  commentId
-     * @return SysNotify
      */
     void commentNotify(String postId, String commentId);
+
+    /**
+     * 引用通知
+     *
+     * @param userId
+     * @param postId
+     * @param  commentId
+     */
+    void quoteNotify(String userId, String postId, String commentId);
 
     /**
      * 关注通知
      *
      * @param  userId
      * @param  followingId
-     * @return SysNotify
      */
     void followNotify(String userId, String followingId);
 
