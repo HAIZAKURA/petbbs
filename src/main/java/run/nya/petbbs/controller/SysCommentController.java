@@ -12,8 +12,7 @@ import run.nya.petbbs.model.dto.CreateCommentDTO;
 import run.nya.petbbs.model.entity.SysComment;
 import run.nya.petbbs.model.entity.SysUser;
 import run.nya.petbbs.model.vo.CommentVO;
-import run.nya.petbbs.service.ISysCommentService;
-import run.nya.petbbs.service.ISysUserService;
+import run.nya.petbbs.service.*;
 
 import javax.annotation.Resource;
 import java.security.Principal;
@@ -33,6 +32,9 @@ public class SysCommentController extends BaseController {
 
     @Resource
     private ISysUserService iSysUserService;
+
+    @Resource
+    private ISysNotifyService iSysNotifyService;
 
     /**
      * 获取评论列表
@@ -71,6 +73,7 @@ public class SysCommentController extends BaseController {
             return ApiResult.failed("账号未激活");
         }
         SysComment sysComment = iSysCommentService.create(dto, user);
+        iSysNotifyService.commentNotify(dto.getPostId(), sysComment.getId());
         return ApiResult.success(sysComment);
     }
 

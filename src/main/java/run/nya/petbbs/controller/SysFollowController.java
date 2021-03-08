@@ -12,6 +12,7 @@ import run.nya.petbbs.model.entity.SysFollow;
 import run.nya.petbbs.model.entity.SysUser;
 import run.nya.petbbs.model.vo.FollowVO;
 import run.nya.petbbs.service.ISysFollowService;
+import run.nya.petbbs.service.ISysNotifyService;
 import run.nya.petbbs.service.ISysUserService;
 
 import javax.annotation.Resource;
@@ -32,6 +33,9 @@ public class SysFollowController extends BaseController {
 
     @Resource
     private ISysUserService iSysUserService;
+
+    @Resource
+    private ISysNotifyService iSysNotifyService;
 
     /**
      * 获取自己粉丝列表
@@ -138,6 +142,7 @@ public class SysFollowController extends BaseController {
             return ApiResult.failed("账号未激活");
         }
         SysFollow sysFollow = iSysFollowService.follow(user.getId(), followId);
+        iSysNotifyService.followNotify(followId, user.getId());
         return ApiResult.success(sysFollow);
     }
 
