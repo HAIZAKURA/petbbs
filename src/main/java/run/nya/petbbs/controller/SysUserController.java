@@ -136,11 +136,32 @@ public class SysUserController extends BaseController {
      * 登录用户
      *
      * @param  principal
+     * @return ApiResult
+     */
+    @ApiOperation(value = "获取当前用户信息")
+    @PreAuthorize("isAuthenticated()")
+    @RequestMapping(value = "/user/info", method = RequestMethod.GET)
+    public ApiResult<Map<String, Object>> getUserInfo(Principal principal) {
+        SysUser sysUser = iSysUserService.getUserByUsername(principal.getName());
+        if (ObjectUtils.isEmpty(sysUser)) {
+            return ApiResult.failed("用户不存在");
+        }
+        Map<String, Object> map = new HashMap<>(16);
+        map.put("user", sysUser);
+        return ApiResult.success(map);
+    }
+
+    /**
+     * 获取当前用户信息
+     * 含话题
+     * 登录用户
+     *
+     * @param  principal
      * @param  pageNum
      * @param  pageSize
      * @return ApiResult
      */
-    @ApiOperation(value = "获取当前用户信息")
+    @ApiOperation(value = "获取当前用户信息 含话题")
     @PreAuthorize("isAuthenticated()")
     @RequestMapping(value = "/user", method = RequestMethod.GET)
     public ApiResult<Map<String, Object>> getUser(
