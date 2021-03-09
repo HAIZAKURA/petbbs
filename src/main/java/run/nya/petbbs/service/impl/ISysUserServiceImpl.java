@@ -148,7 +148,7 @@ public class ISysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> imp
         String domain = sysConfigMapper
                 .selectOne(new LambdaQueryWrapper<SysConfig>().eq(SysConfig::getItem, "site_domain"))
                 .getValue();
-        String activeUrl = URLUtil.normalize(domain + "/#?user=" + dto.getName() + "&code=" + activeCode);
+        String activeUrl = URLUtil.normalize(domain + "/#/active?user=" + dto.getName() + "&code=" + activeCode);
         String content = "请在30分钟内激活您的账号，如非本人操作，请忽略 </br > " +
                 "<a href=\"" + activeUrl + "\" target =\"_blank\" '>点击激活账号</a>";
         ThreadUtil.execAsync(() -> {
@@ -196,7 +196,7 @@ public class ISysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> imp
         String domain = sysConfigMapper
                 .selectOne(new LambdaQueryWrapper<SysConfig>().eq(SysConfig::getItem, "site_domain"))
                 .getValue();
-        String activeUrl = URLUtil.normalize(domain + "/#?user=" + name + "&code=" + activeCode);
+        String activeUrl = URLUtil.normalize(domain + "/#/active?user=" + name + "&code=" + activeCode);
         String content = "请在30分钟内激活您的账号，如非本人操作，请忽略 </br > " +
                 "<a href=\"" + activeUrl + "\" target =\"_blank\" '>点击激活账号</a>";
         ThreadUtil.execAsync(() -> {
