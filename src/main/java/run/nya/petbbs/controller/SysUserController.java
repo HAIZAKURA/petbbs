@@ -128,7 +128,7 @@ public class SysUserController extends BaseController {
             e.printStackTrace();
             return ApiResult.success("发送失败");
         }
-        return ApiResult.success("发送失败");
+        return ApiResult.success("发送成功");
     }
 
     /**

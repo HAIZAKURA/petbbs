@@ -3,20 +3,31 @@ package run.nya.petbbs.util;
 import cn.hutool.extra.mail.MailAccount;
 import cn.hutool.extra.mail.MailUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import run.nya.petbbs.mapper.SysConfigMapper;
 import run.nya.petbbs.model.entity.SysConfig;
 
-import javax.annotation.Resource;
+import javax.annotation.PostConstruct;
 
 /**
  * 邮件工具类
  *
  * 2021/03/06
  */
+@Component
 public class SysMailUtil {
 
-    @Resource
+    @Autowired
     private SysConfigMapper sysConfigMapper;
+
+    private static SysMailUtil sysMailUtil;
+
+    @PostConstruct
+    public void init() {
+        sysMailUtil = this;
+        sysMailUtil.sysConfigMapper = this.sysConfigMapper;
+    }
 
     /**
      * 发送邮件
@@ -26,28 +37,28 @@ public class SysMailUtil {
      * @param content
      * @param isHtml
      */
-    public void sendMail(String to, String subject, String content, Boolean isHtml) {
+    public Boolean sendMail(String to, String subject, String content, Boolean isHtml) {
         MailAccount account = new MailAccount();
-        String mailFrom = sysConfigMapper
+        String mailFrom = sysMailUtil.sysConfigMapper
                 .selectOne(new LambdaQueryWrapper<SysConfig>().eq(SysConfig::getItem, "mail_from"))
                 .getValue();
-        String mailUser = sysConfigMapper
+        String mailUser = sysMailUtil.sysConfigMapper
                 .selectOne(new LambdaQueryWrapper<SysConfig>().eq(SysConfig::getItem, "mail_user"))
                 .getValue();
-        String mailPass = sysConfigMapper
+        String mailPass = sysMailUtil.sysConfigMapper
                 .selectOne(new LambdaQueryWrapper<SysConfig>().eq(SysConfig::getItem, "mail_pass"))
                 .getValue();
-        String mailHost = sysConfigMapper
+        String mailHost = sysMailUtil.sysConfigMapper
                 .selectOne(new LambdaQueryWrapper<SysConfig>().eq(SysConfig::getItem, "mail_host"))
                 .getValue();
         Integer mailPort = Integer
-                .valueOf(sysConfigMapper
+                .valueOf(sysMailUtil.sysConfigMapper
                     .selectOne(new LambdaQueryWrapper<SysConfig>().eq(SysConfig::getItem, "mail_port"))
                     .getValue());
-        Boolean mailSsl = sysConfigMapper
+        boolean mailSsl = sysMailUtil.sysConfigMapper
                 .selectOne(new LambdaQueryWrapper<SysConfig>().eq(SysConfig::getItem, "mail_ssl"))
                 .getValue()
-                .equals("yes") ? Boolean.TRUE : Boolean.FALSE;
+                .equals("yes");
         account.setFrom(mailFrom);
         account.setUser(mailUser);
         account.setPass(mailPass);
@@ -55,6 +66,7 @@ public class SysMailUtil {
         account.setPort(mailPort);
         account.setSslEnable(mailSsl);
         MailUtil.send(account, to, subject, content, isHtml);
+        return true;
     }
 
 }

@@ -146,7 +146,7 @@ public class ISysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> imp
         redisService.set("activeCode[" + dto.getName() + "]", activeCode, 30 * 60);
         // 发送邮件
         String domain = sysConfigMapper
-                .selectOne(new LambdaQueryWrapper<SysConfig>().eq(SysConfig::getItem, "domain"))
+                .selectOne(new LambdaQueryWrapper<SysConfig>().eq(SysConfig::getItem, "site_domain"))
                 .getValue();
         String activeUrl = URLUtil.normalize(domain + "/#?user=" + dto.getName() + "&code=" + activeCode);
         String content = "请在30分钟内激活您的账号，如非本人操作，请忽略 </br > " +
@@ -155,7 +155,6 @@ public class ISysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> imp
             try {
                 SysMailUtil sysMailUtil = new SysMailUtil();
                 sysMailUtil.sendMail(dto.getEmail(), "账号激活", content, true);
-//                MailUtil.send(dto.getEmail(), "账号激活", content, true);
             } catch (Exception e) {
                 ApiAsserts.fail("发送失败！");
             }
@@ -195,7 +194,7 @@ public class ISysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> imp
         String activeCode = RandomUtil.randomString(8);
         redisService.set("activeCode[" + name + "]", activeCode, 30 * 60);
         String domain = sysConfigMapper
-                .selectOne(new LambdaQueryWrapper<SysConfig>().eq(SysConfig::getItem, "domain"))
+                .selectOne(new LambdaQueryWrapper<SysConfig>().eq(SysConfig::getItem, "site_domain"))
                 .getValue();
         String activeUrl = URLUtil.normalize(domain + "/#?user=" + name + "&code=" + activeCode);
         String content = "请在30分钟内激活您的账号，如非本人操作，请忽略 </br > " +
@@ -204,7 +203,6 @@ public class ISysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> imp
             try {
                 SysMailUtil sysMailUtil = new SysMailUtil();
                 sysMailUtil.sendMail(email, "账号激活", content, true);
-//                MailUtil.send(dto.getEmail(), "账号激活", content, true);
             } catch (Exception e) {
                 ApiAsserts.fail("发送失败！");
             }
