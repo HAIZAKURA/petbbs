@@ -1,17 +1,17 @@
 package run.nya.petbbs.controller;
 
+import cn.hutool.core.thread.ThreadUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.ObjectUtils;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import run.nya.petbbs.common.api.ApiResult;
+import run.nya.petbbs.common.exception.ApiAsserts;
 import run.nya.petbbs.model.entity.SysConfig;
 import run.nya.petbbs.service.ISysConfigService;
+import run.nya.petbbs.util.SysMailUtil;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
@@ -86,6 +86,28 @@ public class SysConfigController extends BaseController {
             iSysConfigService.update(config, new LambdaQueryWrapper<SysConfig>().eq(SysConfig::getItem, config.getItem()));
         });
         return ApiResult.success("修改成功");
+    }
+
+    /**
+     * email测试
+     * 超级管理员
+     *
+     * @param  mailto
+     * @return ApiResult
+     */
+    @ApiOperation(value = "email测试")
+    @PreAuthorize("hasRole('ROLE_SUPERADMIN')")
+    @RequestMapping(value = "/mail_test", method = RequestMethod.GET)
+    public ApiResult<String> mailTest(@RequestParam("mailto") String mailto) {
+        ThreadUtil.execAsync(() -> {
+            try {
+                SysMailUtil sysMailUtil = new SysMailUtil();
+                sysMailUtil.sendMail(mailto, "系统测试", "这是一封测试邮件。", false);
+            } catch (Exception e) {
+                ApiAsserts.fail("发送失败！");
+            }
+        });
+        return ApiResult.success("发送成功");
     }
 
 }
