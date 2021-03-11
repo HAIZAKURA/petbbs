@@ -32,7 +32,7 @@ public class QiniuController extends BaseController {
      */
     @ApiOperation(value = "超级管理员获取七牛配置")
     @PreAuthorize("hasRole('ROLE_SUPERADMIN')")
-    @RequestMapping(value = "/qiniu", method = RequestMethod.GET)
+    @RequestMapping(value = "/admin/qiniu", method = RequestMethod.GET)
     public ApiResult<QiniuConfig> getQiniuConfig() {
         QiniuConfig qiniuConfig = iQiniuConfigService.getQiniuConfig();
         return ApiResult.success(qiniuConfig);
@@ -47,7 +47,7 @@ public class QiniuController extends BaseController {
      */
     @ApiOperation(value = "超级管理员修改七牛配置")
     @PreAuthorize("hasRole('ROLE_SUPERADMIN')")
-    @RequestMapping(value = "/qiniu", method = RequestMethod.PUT)
+    @RequestMapping(value = "/admin/qiniu", method = RequestMethod.PUT)
     public ApiResult<String> updateQiniuConfig(@RequestBody QiniuDTO dto) {
         if (iQiniuConfigService.updateQiniuConfig(dto) > 0) {
             return ApiResult.success("修改成功");
