@@ -152,6 +152,31 @@ public class SysUserController extends BaseController {
     }
 
     /**
+     * 获取指定用户信息
+     *
+     * @param  usernameXid
+     * @return ApiResult
+     */
+    @ApiOperation(value = "获取指定用户信息")
+    @RequestMapping(value = "/user/info/{usernameXid}", method = RequestMethod.GET)
+    public ApiResult<Map<String, Object>> getUserInfoByUsernameOrId(
+            @ApiParam(name = "usernameXid", value = "用户名或用户ID", required = true) @PathVariable("usernameXid") String usernameXid
+    ) {
+        SysUser sysUser = null;
+        if (usernameXid.matches("[0-9]{19,}")) {
+            sysUser = iSysUserService.getById(usernameXid);
+        } else {
+            sysUser = iSysUserService.getUserByUsername(usernameXid);
+        }
+        if (ObjectUtils.isEmpty(sysUser)) {
+            return ApiResult.failed("用户不存在");
+        }
+        Map<String, Object> map = new HashMap<>(16);
+        map.put("user", sysUser);
+        return ApiResult.success(map);
+    }
+
+    /**
      * 获取当前用户信息
      * 含话题
      * 登录用户
@@ -191,7 +216,7 @@ public class SysUserController extends BaseController {
      * @param  pageSize
      * @return ApiResult
      */
-    @ApiOperation(value = "获取指定用户信息")
+    @ApiOperation(value = "获取指定用户信息 含话题")
     @PreAuthorize("isAuthenticated()")
     @RequestMapping(value = "/user/{usernameXid}", method = RequestMethod.GET)
     public ApiResult<Map<String, Object>> getUserByUsernameOrId(

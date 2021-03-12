@@ -48,12 +48,19 @@ public class SysSectionController extends BaseController {
         return ApiResult.success(page);
     }
 
-    @RequestMapping(value = "/section/{title}", method = RequestMethod.GET)
+    /**
+     * 获取专栏信息
+     *
+     * @param  id
+     * @return ApiResult
+     */
+    @ApiOperation(value = "获取专栏信息")
+    @RequestMapping(value = "/section/{id}", method = RequestMethod.GET)
     public ApiResult<SysSection> getSection(
-            @ApiParam(name = "title", value = "专栏标题", required = true) @PathVariable("title") String title
+            @ApiParam(name = "id", value = "id", required = true) @PathVariable("id") String id
     ) {
         LambdaQueryWrapper<SysSection> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(SysSection::getTitle, title);
+        wrapper.eq(SysSection::getId, id);
         SysSection section = iSysSectionService.getOne(wrapper);
         if (ObjectUtils.isEmpty(section)) {
             return ApiResult.failed("专栏不存在");

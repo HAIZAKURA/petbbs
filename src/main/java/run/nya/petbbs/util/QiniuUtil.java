@@ -48,7 +48,7 @@ public class QiniuUtil {
             StringMap putPolicy = new StringMap();
             putPolicy.put("mimeLimit", "image/*");
             putPolicy.put("fsizeLimit", 20971520);
-            putPolicy.put("saveKey", "$(etag)${ext}");
+            putPolicy.put("saveKey", "$(etag)");
             String upToken = auth.uploadToken(bucket, null, 3600, putPolicy);
 
             try {
@@ -101,13 +101,13 @@ public class QiniuUtil {
             ByteArrayInputStream byteInputStream = new ByteArrayInputStream(uploadBytes);
             Auth auth = Auth.create(accessKey, secretKey);
             String fops = "avthumb/mp4/ab/160k/ar/44100/acodec/libfaac/r/30/vb/1000k/vcodec/libx264/s/1280x720/autoscale/1/stripmeta/0";
-            String save = UrlSafeBase64.encodeToString("petbbs:${etag}${ext}");
+            String save = UrlSafeBase64.encodeToString("petbbs:${etag}");
             StringMap putPolicy = new StringMap();
             putPolicy.put("mimeLimit", "video/*");
             putPolicy.put("fsizeLimit", 104857600);
             putPolicy.put("persistentOps", fops + "|saveas/" + save);
             putPolicy.put("persistentPipeline", "short");
-            putPolicy.put("saveKey", "$(etag)${ext}");
+            putPolicy.put("saveKey", "$(etag)");
             String upToken = auth.uploadToken(bucket, null, 3600, putPolicy);
 
             try {

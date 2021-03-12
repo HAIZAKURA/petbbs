@@ -34,18 +34,13 @@ public class SysTagController extends BaseController {
     /**
      * 获取所有标签
      *
-     * @param  pageNum
-     * @param  pageSize
      * @return ApiResult
      */
     @ApiOperation(value = "获取所有标签")
     @RequestMapping(value = "/tag", method = RequestMethod.GET)
-    public ApiResult<Page<SysTag>> getTags(
-            @ApiParam(name = "pageNum", value = "页码:默认0", required = true) @RequestParam(value = "pageNum", defaultValue = "0") Integer pageNum,
-            @ApiParam(name = "pageSize", value = "每页数据量:默认10", required = true) @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize
-    ) {
-        Page<SysTag> page = iSysTagService.page(new Page<>(pageNum, pageSize), null);
-        return ApiResult.success(page);
+    public ApiResult<List<SysTag>> getTags() {
+        List<SysTag> list = iSysTagService.list();
+        return ApiResult.success(list);
     }
 
     /**

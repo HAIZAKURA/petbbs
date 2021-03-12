@@ -114,28 +114,28 @@ public class ISysVideoPostServiceImpl extends ServiceImpl<SysVideoPostMapper, Sy
      * @param  user
      * @return SysVideoPost
      */
-    @Override
-    public SysVideoPost create(CreateVideoDTO dto, SysUser user) {
-        SysVideoPost videoIsExist = baseMapper.selectOne(new LambdaQueryWrapper<SysVideoPost>().eq(SysVideoPost::getTitle, dto.getTitle()));
-        if (!ObjectUtils.isEmpty(videoIsExist)) {
-            ApiAsserts.fail("视频已存在");
-        }
-        SysVideoPost videoPost = SysVideoPost.builder()
-                .title(dto.getTitle())
-                .video(dto.getVideo())
-                .content(dto.getContent())
-                .userId(user.getId())
-                .createTime(new Date())
-                .build();
-        baseMapper.insert(videoPost);
-        Integer newScore = user.getScore() + 1;
-        sysUserMapper.updateById(user.setScore(newScore));
-        if (ObjectUtils.isEmpty(dto.getTags())) {
-            ApiAsserts.fail("标签不能为空");
-        }
-        iSysPostTagService.createPostTag(videoPost.getId(), dto.getTags());
-        return videoPost;
-    }
+//    @Override
+//    public SysVideoPost create(CreateVideoDTO dto, SysUser user) {
+//        SysVideoPost videoIsExist = baseMapper.selectOne(new LambdaQueryWrapper<SysVideoPost>().eq(SysVideoPost::getTitle, dto.getTitle()));
+//        if (!ObjectUtils.isEmpty(videoIsExist)) {
+//            ApiAsserts.fail("视频已存在");
+//        }
+//        SysVideoPost videoPost = SysVideoPost.builder()
+//                .title(dto.getTitle())
+//                .video(dto.getVideo())
+//                .content(dto.getContent())
+//                .userId(user.getId())
+//                .createTime(new Date())
+//                .build();
+//        baseMapper.insert(videoPost);
+//        Integer newScore = user.getScore() + 1;
+//        sysUserMapper.updateById(user.setScore(newScore));
+//        if (ObjectUtils.isEmpty(dto.getTags())) {
+//            ApiAsserts.fail("标签不能为空");
+//        }
+//        iSysPostTagService.createPostTag(videoPost.getId(), dto.getTags());
+//        return videoPost;
+//    }
 
     /**
      * 关键词检索

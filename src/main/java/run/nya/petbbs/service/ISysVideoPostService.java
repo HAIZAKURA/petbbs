@@ -42,7 +42,7 @@ public interface ISysVideoPostService extends IService<SysVideoPost> {
      * @param  user
      * @return SysVideoPost
      */
-    SysVideoPost create(CreateVideoDTO dto, SysUser user);
+//    SysVideoPost create(CreateVideoDTO dto, SysUser user);
 
     /**
      * 关键词检索
