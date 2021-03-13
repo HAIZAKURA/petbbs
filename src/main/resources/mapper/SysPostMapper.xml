@@ -92,6 +92,13 @@
         limit 10
     </select>
 
+    <select id="randomPost" resultType="run.nya.petbbs.model.entity.SysPost">
+        SELECT *
+        FROM sys_post t
+        ORDER BY rand(), t.view
+        limit 1
+    </select>
+
     <select id="searchByKey" resultMap="postVO">
         SELECT t.id,
                t.title,

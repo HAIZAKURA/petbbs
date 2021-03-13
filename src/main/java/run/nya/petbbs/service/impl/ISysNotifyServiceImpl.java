@@ -54,11 +54,11 @@ public class ISysNotifyServiceImpl extends ServiceImpl<SysNotifyMapper, SysNotif
         if (!ObjectUtils.isEmpty(sysPost)) {
             userId = sysPost.getUserId();
             content = "有人评论了你的话题 " + sysPost.getTitle() + " 哦！";
-            remark = "post." + postId + "|" + "comm." + commentId;
+            remark = postId;
         } else if (!ObjectUtils.isEmpty(sysVideoPost)) {
             userId = sysVideoPost.getUserId();
             content = "有人评论了你的视频 " + sysVideoPost.getTitle() + " 哦！";
-            remark = "video." + postId + "|" + "comm." + commentId;
+            remark = "video." + postId;
         } else {
             ApiAsserts.fail("操作失败");
         }
@@ -87,10 +87,10 @@ public class ISysNotifyServiceImpl extends ServiceImpl<SysNotifyMapper, SysNotif
         String remark = "";
         if (!ObjectUtils.isEmpty(sysPost)) {
             content = "有人回复了你的评论哦！";
-            remark = "post." + postId + "|" + "comm." + commentId;
+            remark = postId;
         } else if (!ObjectUtils.isEmpty(sysVideoPost)) {
             content = "有人回复了你的评论哦！";
-            remark = "video." + postId + "|" + "comm." + commentId;
+            remark = "video." + postId;
         } else {
             ApiAsserts.fail("操作失败");
         }

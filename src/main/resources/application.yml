@@ -83,6 +83,7 @@ secure:
       - /api/search
       - /api/info
       - /api/user/info/**
+      - /api/random
 
 logging:
   level:

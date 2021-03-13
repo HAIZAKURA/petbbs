@@ -56,4 +56,6 @@ public interface SysPostMapper extends BaseMapper<SysPost> {
      */
     Page<PostVO> searchByKey(@Param("page") Page<PostVO> page, @Param("keyword") String keyword);
 
+    SysPost randomPost();
+
 }

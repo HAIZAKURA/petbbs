@@ -4,8 +4,11 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import run.nya.petbbs.common.api.ApiResult;
+import run.nya.petbbs.mapper.SysPostMapper;
+import run.nya.petbbs.model.entity.SysPost;
 import run.nya.petbbs.model.vo.PostVO;
 import run.nya.petbbs.service.ISysPostService;
 
@@ -23,6 +26,9 @@ public class SysSearchController extends BaseController {
 
     @Resource
     private ISysPostService iSysPostService;
+
+    @Autowired
+    private SysPostMapper sysPostMapper;
 
     /**
      * 通过关键词搜索话题
@@ -42,6 +48,12 @@ public class SysSearchController extends BaseController {
     ) {
         Page<PostVO> res = iSysPostService.searchByKey(new Page<>(pageNum, pageSize), keyword);
         return ApiResult.success(res);
+    }
+
+    @RequestMapping(value = "/random", method = RequestMethod.GET)
+    public ApiResult<SysPost> randomPost() {
+        SysPost post = sysPostMapper.randomPost();
+        return ApiResult.success(post);
     }
 
 }
