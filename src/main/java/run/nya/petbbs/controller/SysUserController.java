@@ -209,7 +209,7 @@ public class SysUserController extends BaseController {
 
     /**
      * 获取指定用户信息
-     * 登录用户
+     * 含话题
      *
      * @param  usernameXid
      * @param  pageNum
@@ -217,7 +217,6 @@ public class SysUserController extends BaseController {
      * @return ApiResult
      */
     @ApiOperation(value = "获取指定用户信息 含话题")
-    @PreAuthorize("isAuthenticated()")
     @RequestMapping(value = "/user/{usernameXid}", method = RequestMethod.GET)
     public ApiResult<Map<String, Object>> getUserByUsernameOrId(
             @ApiParam(name = "usernameXid", value = "用户名或用户ID", required = true) @PathVariable("usernameXid") String usernameXid,
