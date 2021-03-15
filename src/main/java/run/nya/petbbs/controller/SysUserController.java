@@ -122,6 +122,10 @@ public class SysUserController extends BaseController {
             @RequestParam("name") String name,
             @RequestParam("email") String email
     ) {
+        SysUser user = iSysUserService.getOne(new LambdaQueryWrapper<SysUser>().eq(SysUser::getUsername, name).eq(SysUser::getEmail, email));
+        if (ObjectUtils.isEmpty(user)) {
+            return ApiResult.failed("用户信息错误");
+        }
         try {
             iSysUserService.reActive(name, email);
         } catch (Exception e) {
@@ -293,6 +297,33 @@ public class SysUserController extends BaseController {
             e.printStackTrace();
         }
         return ApiResult.failed("修改失败");
+    }
+
+    /**
+     * 修改密码
+     * 登录用户
+     *
+     * @param  oldPass
+     * @param  newPass
+     * @param  principal
+     * @return ApiResult
+     */
+    @ApiOperation(value = "修改密码")
+    @PreAuthorize("isAuthenticated()")
+    @RequestMapping(value = "/password", method = RequestMethod.PUT)
+    public ApiResult<String> updatePassword(
+            @RequestParam(value = "old") String oldPass,
+            @RequestParam(value = "new") String newPass,
+            Principal principal
+    ) {
+        SysUser user = iSysUserService.getUserByUsername(principal.getName());
+        if (!user.getActive()) {
+            return ApiResult.failed("账号未激活");
+        }
+        if (iSysUserService.changePassword(user.getId(), oldPass, newPass)) {
+            return ApiResult.success("操作成功");
+        }
+        return ApiResult.failed("操作失败");
     }
 
 }

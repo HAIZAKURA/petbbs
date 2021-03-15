@@ -50,12 +50,32 @@ public class SysPhotoController extends BaseController {
      * @return ApiResult
      */
     @ApiOperation(value = "获取照片列表")
-    @RequestMapping(value = "/photo",method = RequestMethod.GET)
+    @RequestMapping(value = "/photo", method = RequestMethod.GET)
     public ApiResult<Page<PhotoVO>> getList(
             @ApiParam(name = "pageNum", value = "页码:默认1", required = true) @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
             @ApiParam(name = "pageSize", value = "每页数据量:默认10", required = true) @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize
     ) {
         Page<PhotoVO> page = iSysPhotoService.getList(new Page<>(pageNum, pageSize));
+        return ApiResult.success(page);
+    }
+
+    /**
+     * 获取用户照片列表
+     *
+     * @param  userId
+     * @param  pageNum
+     * @param  pageSize
+     * @return ApiResult
+     */
+    @ApiOperation(value = "获取用户照片列表")
+    @RequestMapping(value = "/user/photo", method = RequestMethod.GET)
+    public ApiResult<Page<SysPhoto>> getListByUser(
+            @RequestParam(value = "userId") String userId,
+            @ApiParam(name = "pageNum", value = "页码:默认1", required = true) @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
+            @ApiParam(name = "pageSize", value = "每页数据量:默认10", required = true) @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize
+
+    ) {
+        Page<SysPhoto> page = iSysPhotoService.page(new Page<>(pageNum, pageSize), new LambdaQueryWrapper<SysPhoto>().eq(SysPhoto::getUserId, userId));
         return ApiResult.success(page);
     }
 

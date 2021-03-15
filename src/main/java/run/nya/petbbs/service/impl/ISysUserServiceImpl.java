@@ -17,6 +17,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -207,6 +208,27 @@ public class ISysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> imp
                 ApiAsserts.fail("发送失败！");
             }
         });
+    }
+
+    /**
+     * 修改密码
+     *
+     * @param id
+     * @param oldPass
+     * @param newPass
+     * @return
+     */
+    @Override
+    public boolean changePassword(String id, String oldPass, String newPass) {
+        SysUser user = baseMapper.selectById(id);
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        if (encoder.matches(oldPass, user.getPassword())) {
+            String encode = encoder.encode(newPass);
+            user.setPassword(encode);
+            baseMapper.updateById(user);
+            return true;
+        }
+        return false;
     }
 
 }

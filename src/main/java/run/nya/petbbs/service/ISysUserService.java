@@ -53,4 +53,14 @@ public interface ISysUserService extends IService<SysUser> {
      */
     void reActive(String name, String email);
 
+    /**
+     * 修改密码
+     *
+     * @param id
+     * @param oldPass
+     * @param newPass
+     * @return
+     */
+    public boolean changePassword(String id, String oldPass, String newPass);
+
 }
