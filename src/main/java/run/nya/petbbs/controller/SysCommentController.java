@@ -88,6 +88,33 @@ public class SysCommentController extends BaseController {
     }
 
     /**
+     * 创建评论
+     * 登录用户
+     *
+     * @param  dto
+     * @param  principal
+     * @return ApiResult
+     */
+    @ApiOperation(value = "创建评论")
+    @PreAuthorize("isAuthenticated()")
+    @RequestMapping(value = "/comment/photo", method = RequestMethod.POST)
+    public ApiResult<SysComment> createPhoto(@RequestBody CreateCommentDTO dto, Principal principal) {
+        SysUser user = iSysUserService.getUserByUsername(principal.getName());
+        if (!user.getActive()) {
+            return ApiResult.failed("账号未激活");
+        }
+        String content = dto.getContent();
+        List<String> words = iSysSensitiveWordService.getWords();
+        for (String word : words) {
+            content = content.replace(word, "***");
+        }
+        dto.setContent(content);
+        SysComment sysComment = iSysCommentService.createPhoto(dto, user);
+        iSysNotifyService.commentNotify(dto.getPostId(), sysComment.getId());
+        return ApiResult.success(sysComment);
+    }
+
+    /**
      * 删除评论
      * 登录用户
      *

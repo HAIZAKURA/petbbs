@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="run.nya.petbbs.mapper.SysCollectMapper">
+    <resultMap id="collectVO" type="run.nya.petbbs.model.vo.CollectVO">
+        <id column="id" property="id"/>
+        <result column="title" property="title"/>
+        <result column="post_id" property="postId" />
+        <result column="user_id" property="userId"/>
+        <result column="comments" property="comments"/>
+        <result column="view" property="view"/>
+        <result column="collects" property="collects"/>
+        <result column="top" property="top"/>
+        <result column="essence" property="essence"/>
+        <result column="create_time" property="createTime"/>
+        <result column="modify_time" property="modifyTime"/>
+        <result column="username" property="username"/>
+        <result column="alias" property="alias"/>
+        <result column="avatar" property="avatar"/>
+    </resultMap>
+
+    <select id="getCollects" resultMap="collectVO">
+        SELECT c.id,
+               c.post_id,
+               p.title,
+               p.user_id,
+               p.comments,
+               p.view,
+               p.collects,
+               p.top,
+               p.essence,
+               p.create_time,
+               p.modify_time,
+               u.username,
+               u.alias,
+               u.avatar
+        FROM sys_collect c, sys_post p, sys_user u
+        WHERE c.user_id = #{userId} AND c.post_id = p.id AND p.user_id = u.id
+        ORDER BY c.create_time DESC
+    </select>
+</mapper>

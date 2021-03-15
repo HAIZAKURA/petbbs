@@ -24,6 +24,15 @@ public interface ISysCommentService extends IService<SysComment> {
     SysComment create(CreateCommentDTO dto, SysUser sysUser);
 
     /**
+     * 创建评论
+     *
+     * @param  dto
+     * @param  sysUser
+     * @return SysComment
+     */
+    SysComment createPhoto(CreateCommentDTO dto, SysUser sysUser);
+
+    /**
      * 获取评论列表
      *
      * @param  page

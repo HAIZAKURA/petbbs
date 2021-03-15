@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="run.nya.petbbs.mapper.SysPhotoMapper">
+    <resultMap id="photoVO" type="run.nya.petbbs.model.vo.PhotoVO">
+        <id column="id" property="id"/>
+        <result column="photo" property="photo"/>
+        <result column="user_id" property="userId"/>
+        <result column="comments" property="comments"/>
+        <result column="view" property="view"/>
+        <result column="content" property="content"/>
+        <result column="create_time" property="createTime"/>
+        <result column="username" property="username"/>
+        <result column="alias" property="alias"/>
+        <result column="avatar" property="avatar"/>
+    </resultMap>
+
+    <select id="getList" resultMap="photoVO">
+        SELECT p.id,
+               p.photo,
+               p.user_id,
+               p.comments,
+               p.view,
+               p.content,
+               p.create_time,
+               u.username,
+               u.alias,
+               u.avatar
+        FROM sys_photo p
+        LEFT JOIN sys_user u
+        ON p.user_id = u.id
+        ORDER BY p.view DESC, p.create_time DESC
+    </select>
+</mapper>

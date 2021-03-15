@@ -9,18 +9,13 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 import run.nya.petbbs.mapper.SysCommentMapper;
 import run.nya.petbbs.mapper.SysCommentQuoteMapper;
+import run.nya.petbbs.mapper.SysPhotoMapper;
 import run.nya.petbbs.mapper.SysPostMapper;
 import run.nya.petbbs.model.dto.CreateCommentDTO;
-import run.nya.petbbs.model.entity.SysComment;
-import run.nya.petbbs.model.entity.SysCommentQuote;
-import run.nya.petbbs.model.entity.SysPost;
-import run.nya.petbbs.model.entity.SysUser;
+import run.nya.petbbs.model.entity.*;
 import run.nya.petbbs.model.vo.CommentVO;
 import run.nya.petbbs.model.vo.QuoteVO;
-import run.nya.petbbs.service.ISysCommentQuoteService;
-import run.nya.petbbs.service.ISysCommentService;
-import run.nya.petbbs.service.ISysNotifyService;
-import run.nya.petbbs.service.ISysPostService;
+import run.nya.petbbs.service.*;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -42,6 +37,9 @@ public class ISysCommentServiceImpl extends ServiceImpl<SysCommentMapper, SysCom
     private ISysPostService iSysPostService;
 
     @Autowired
+    private ISysPhotoService iSysPhotoService;
+
+    @Autowired
     private ISysCommentQuoteService iSysCommentQuoteService;
 
     @Autowired
@@ -49,6 +47,9 @@ public class ISysCommentServiceImpl extends ServiceImpl<SysCommentMapper, SysCom
 
     @Resource
     private SysPostMapper sysPostMapper;
+
+    @Resource
+    private SysPhotoMapper sysPhotoMapper;
 
     @Resource
     private SysCommentMapper sysCommentMapper;
@@ -84,6 +85,37 @@ public class ISysCommentServiceImpl extends ServiceImpl<SysCommentMapper, SysCom
         SysPost sysPost = iSysPostService.getById(dto.getPostId());
         Integer newComments = sysPost.getComments() + 1;
         sysPostMapper.updateById(sysPost.setComments(newComments));
+        return comment;
+    }
+
+    /**
+     * 创建评论
+     *
+     * @param  dto
+     * @param  sysUser
+     * @return SysComment
+     */
+    @Override
+    public SysComment createPhoto(CreateCommentDTO dto, SysUser sysUser) {
+        SysComment comment = SysComment.builder()
+                .postId(dto.getPostId())
+                .content(dto.getContent())
+                .userId(sysUser.getId())
+                .createTime(new Date())
+                .build();
+        baseMapper.insert(comment);
+        if (!ObjectUtils.isEmpty(dto.getQuoteId())) {
+            SysCommentQuote commentQuote = SysCommentQuote.builder()
+                    .quoteId(dto.getQuoteId())
+                    .commentId(comment.getId())
+                    .build();
+            sysCommentQuoteMapper.insert(commentQuote);
+            SysComment sysComment = baseMapper.selectById(dto.getQuoteId());
+            iSysNotifyService.quoteNotify(sysComment.getUserId(), sysComment.getPostId(), comment.getId());
+        }
+        SysPhoto sysPhoto = iSysPhotoService.getById(dto.getPostId());
+        Integer newComments = sysPhoto.getComments() + 1;
+        sysPhotoMapper.updateById(sysPhoto.setComments(newComments));
         return comment;
     }
 

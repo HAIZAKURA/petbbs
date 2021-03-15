@@ -34,7 +34,7 @@ public class SysCollect implements Serializable {
     @TableField("post_id")
     private String postId;
 
-    @TableField("userId")
+    @TableField("user_id")
     private String userId;
 
     @Field(type = FieldType.Date, format = DateFormat.basic_date_time)

@@ -16,28 +16,28 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 话题实体类
+ * 照片实体类
  *
- * 2021/03/01
+ * 2021/03/014
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@TableName("sys_post")
-@Document(indexName = "post", shards = 1, replicas = 1)
+@TableName("sys_photo")
+@Document(indexName = "photo", shards = 1, replicas = 1)
 @Accessors(chain = true)
-public class SysPost implements Serializable {
+public class SysPhoto implements Serializable {
 
-    private static final long serialVersionUID = -1080216882051222464L;
+    private static final long serialVersionUID = 6839133021373287489L;
 
     @TableId(value = "id", type = IdType.ASSIGN_ID)
     private String id;
 
     @Field(analyzer = "ik_max_word", type = FieldType.Text)
-    @NotBlank(message = "标题不可以为空")
-    @TableField(value = "title")
-    private String title;
+    @NotBlank(message = "照片不可以为空")
+    @TableField(value = "photo")
+    private String photo;
 
     @Field(analyzer = "ik_max_word", type = FieldType.Text)
     @NotBlank(message = "内容不可以为空")
@@ -53,37 +53,13 @@ public class SysPost implements Serializable {
     @Builder.Default
     private Integer comments = 0;
 
-    @TableField("collects")
-    @Builder.Default
-    @Field(type = FieldType.Integer)
-    private Integer collects = 0;
-
     @TableField("view")
     @Builder.Default
     @Field(type = FieldType.Integer)
     private Integer view = 0;
 
-    @Field(type = FieldType.Integer)
-    @TableField("section_id")
-    @Builder.Default
-    private Integer sectionId = 0;
-
-    @Field(type = FieldType.Boolean)
-    @TableField("top")
-    @Builder.Default
-    private Boolean top = false;
-
-    @Field(type = FieldType.Boolean)
-    @TableField("essence")
-    @Builder.Default
-    private Boolean essence = false;
-
     @Field(type = FieldType.Date, format = DateFormat.basic_date_time)
     @TableField(value = "create_time", fill = FieldFill.INSERT)
     private Date createTime;
-
-    @Field(type = FieldType.Date, format = DateFormat.basic_date_time)
-    @TableField(value = "modify_time", fill = FieldFill.UPDATE)
-    private Date modifyTime;
 
 }
