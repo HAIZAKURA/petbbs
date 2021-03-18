@@ -16,7 +16,6 @@ import run.nya.petbbs.model.entity.QiniuConfig;
 import java.io.ByteArrayInputStream;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * 七牛工具类
@@ -48,7 +47,7 @@ public class QiniuUtil {
             StringMap putPolicy = new StringMap();
             putPolicy.put("mimeLimit", "image/*");
             putPolicy.put("fsizeLimit", 20971520);
-            putPolicy.put("saveKey", "$(etag)");
+            putPolicy.put("saveKey", "$(etag)$(ext)");
             String upToken = auth.uploadToken(bucket, null, 3600, putPolicy);
 
             try {
