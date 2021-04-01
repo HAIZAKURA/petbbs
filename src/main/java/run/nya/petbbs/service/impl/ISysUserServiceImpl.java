@@ -6,6 +6,7 @@ import cn.hutool.core.util.URLUtil;
 import cn.hutool.extra.mail.MailAccount;
 import cn.hutool.extra.mail.MailUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -229,6 +230,12 @@ public class ISysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> imp
             return true;
         }
         return false;
+    }
+
+    @Override
+    public Page<SysUser> getListByAdmin(Page<SysUser> page) {
+        Page<SysUser> iPage = baseMapper.selectPage(page, null);
+        return iPage;
     }
 
 }

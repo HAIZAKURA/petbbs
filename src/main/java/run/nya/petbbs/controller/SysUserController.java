@@ -255,8 +255,12 @@ public class SysUserController extends BaseController {
     @ApiOperation(value = "管理员获取所有用户信息")
     @PreAuthorize("hasRole('ROLE_SUPERADMIN') or hasRole('ROLE_ADMIN')")
     @RequestMapping(value = "/admin/user", method = RequestMethod.GET)
-    public ApiResult<List<SysUser>> getUsersByAdmin() {
-        return ApiResult.success(iSysUserService.list());
+    public ApiResult<Page<SysUser>> getUsersByAdmin(
+            @ApiParam(name = "pageNum", value = "页码:默认1", required = true) @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
+            @ApiParam(name = "pageSize", value = "每页数据量:默认10", required = true) @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize
+    ) {
+        Page<SysUser> page = iSysUserService.getListByAdmin(new Page<>(pageNum, pageSize));
+        return ApiResult.success(page);
     }
 
     /**

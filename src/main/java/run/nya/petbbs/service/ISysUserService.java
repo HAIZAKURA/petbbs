@@ -1,5 +1,6 @@
 package run.nya.petbbs.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import run.nya.petbbs.model.dto.LoginDTO;
 import run.nya.petbbs.model.dto.RegisterDTO;
@@ -61,6 +62,8 @@ public interface ISysUserService extends IService<SysUser> {
      * @param newPass
      * @return
      */
-    public boolean changePassword(String id, String oldPass, String newPass);
+    boolean changePassword(String id, String oldPass, String newPass);
+
+    Page<SysUser> getListByAdmin(Page<SysUser> page);
 
 }
