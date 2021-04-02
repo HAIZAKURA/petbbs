@@ -232,6 +232,12 @@ public class ISysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> imp
         return false;
     }
 
+    /**
+     * 获取所有用户
+     *
+     * @param page
+     * @return
+     */
     @Override
     public Page<SysUser> getListByAdmin(Page<SysUser> page) {
         Page<SysUser> iPage = baseMapper.selectPage(page, null);

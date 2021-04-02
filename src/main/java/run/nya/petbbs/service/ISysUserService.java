@@ -64,6 +64,12 @@ public interface ISysUserService extends IService<SysUser> {
      */
     boolean changePassword(String id, String oldPass, String newPass);
 
+    /**
+     * 获取所有用户
+     *
+     * @param page
+     * @return
+     */
     Page<SysUser> getListByAdmin(Page<SysUser> page);
 
 }
