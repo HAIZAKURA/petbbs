@@ -70,15 +70,15 @@ public class SysSensitiveWordController extends BaseController {
      * 超级管理员
      * 管理员
      *
-     * @param  word
+     * @param  id
      * @return ApiResult
      */
     @ApiOperation(value = "管理员删除敏感词")
     @PreAuthorize("hasRole('ROLE_SUPERADMIN') or hasRole('ROLE_ADMIN')")
-    @RequestMapping(value = "/admin/word/{word}", method = RequestMethod.DELETE)
-    public ApiResult<String> delete(@PathVariable("word") String word) {
+    @RequestMapping(value = "/admin/word", method = RequestMethod.DELETE)
+    public ApiResult<String> delete(@RequestParam(value = "id") Integer id) {
         LambdaQueryWrapper<SysSensitiveWord> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(SysSensitiveWord::getWord, word);
+        wrapper.eq(SysSensitiveWord::getId, id);
         SysSensitiveWord sysSensitiveWord = iSysSensitiveWordService.getOne(wrapper);
         if (ObjectUtils.isEmpty(sysSensitiveWord)) {
             return ApiResult.failed("敏感词不存在");
