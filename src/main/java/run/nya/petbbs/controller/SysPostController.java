@@ -10,6 +10,7 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 import run.nya.petbbs.common.api.ApiResult;
 import run.nya.petbbs.model.dto.CreatePostDTO;
+import run.nya.petbbs.model.dto.QuickEditPostDTO;
 import run.nya.petbbs.model.entity.SysPost;
 import run.nya.petbbs.model.entity.SysUser;
 import run.nya.petbbs.model.vo.PostVO;
@@ -142,6 +143,31 @@ public class SysPostController extends BaseController {
         sysPost.setModifyTime(new Date());
         sysPost.setContent(EmojiParser.parseToAliases(sysPost.getContent()));
         iSysPostService.updateById(sysPost);
+        return ApiResult.success(sysPost);
+    }
+
+    /**
+     * 快速修改话题
+     * 超级管理员
+     * 管理员
+     *
+     * @param  dto
+     * @return ApiResult
+     */
+    @ApiOperation(value = "管理员快速修改话题")
+    @PreAuthorize("hasRole('ROLE_SUPERADMIN') or hasRole('ROLE_ADMIN')")
+    @RequestMapping(value = "/admin/fast/post", method = RequestMethod.PUT)
+    public ApiResult<SysPost> fastUpdateByAdmin(@Valid @RequestBody QuickEditPostDTO dto) {
+        SysPost sysPost = iSysPostService.getById(dto.getId());
+        sysPost.setModifyTime(new Date());
+        sysPost.setTop(dto.getTop());
+        sysPost.setEssence(dto.getEssence());
+        try {
+            iSysPostService.updateById(sysPost);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ApiResult.failed("修改失败");
+        }
         return ApiResult.success(sysPost);
     }
 
