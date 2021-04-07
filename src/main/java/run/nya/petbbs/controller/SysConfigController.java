@@ -2,6 +2,7 @@ package run.nya.petbbs.controller;
 
 import cn.hutool.core.thread.ThreadUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -9,8 +10,11 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 import run.nya.petbbs.common.api.ApiResult;
 import run.nya.petbbs.common.exception.ApiAsserts;
+import run.nya.petbbs.model.entity.SysComment;
 import run.nya.petbbs.model.entity.SysConfig;
-import run.nya.petbbs.service.ISysConfigService;
+import run.nya.petbbs.model.entity.SysPhoto;
+import run.nya.petbbs.model.entity.SysPost;
+import run.nya.petbbs.service.*;
 import run.nya.petbbs.util.SysMailUtil;
 
 import javax.annotation.Resource;
@@ -30,6 +34,18 @@ public class SysConfigController extends BaseController {
 
     @Resource
     private ISysConfigService iSysConfigService;
+
+    @Resource
+    private ISysPostService iSysPostService;
+
+    @Resource
+    private ISysUserService iSysUserService;
+
+    @Resource
+    private ISysPhotoService iSysPhotoService;
+
+    @Resource
+    private ISysCommentService iSysCommentService;
 
     /**
      * 获取网站信息
@@ -108,6 +124,24 @@ public class SysConfigController extends BaseController {
             }
         });
         return ApiResult.success("发送成功");
+    }
+
+    /**
+     * 获取总览数据
+     *
+     * @return ApiResult
+     */
+    @ApiOperation(value = "获取总览数据")
+    @RequestMapping(value = "/summary", method = RequestMethod.GET)
+    public ApiResult<Map<String, Object>> getSummary() {
+        Map<String, Object> map = new HashMap<>(16);
+        map.put("userCount", iSysUserService.count());
+        map.put("postCount", iSysPostService.count());
+        map.put("photoCount", iSysPhotoService.count());
+        map.put("commentCount", iSysCommentService.count());
+        map.put("postRecent", iSysPostService.list(new QueryWrapper<SysPost>().orderByDesc("create_time").last("limit 5")));
+        map.put("commentRecent", iSysCommentService.list(new QueryWrapper<SysComment>().orderByDesc("create_time").last("limit 5")));
+        return ApiResult.success(map);
     }
 
 }
