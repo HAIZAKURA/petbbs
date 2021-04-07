@@ -9,6 +9,8 @@ import run.nya.petbbs.model.dto.BillboardDTO;
 import run.nya.petbbs.model.entity.SysBillboard;
 import run.nya.petbbs.service.ISysBillboardService;
 
+import java.util.Date;
+
 /**
  * 公告实现类
  *
@@ -29,6 +31,7 @@ public class ISysBillboardServiceImpl extends ServiceImpl<SysBillboardMapper, Sy
     public SysBillboard addBillboard(BillboardDTO dto) {
         SysBillboard sysBillboard = SysBillboard.builder()
                 .content(dto.getContent())
+                .createTime(new Date())
                 .build();
         baseMapper.insert(sysBillboard);
         return sysBillboard;
