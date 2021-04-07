@@ -87,6 +87,7 @@ secure:
       - /api/random
       - /api/photo
       - /api/photo/**
+      - /api/summary
 
 logging:
   level:
