@@ -47,7 +47,7 @@ public class QiniuUtil {
             StringMap putPolicy = new StringMap();
             putPolicy.put("mimeLimit", "image/*");
             putPolicy.put("fsizeLimit", 20971520);
-            putPolicy.put("saveKey", "$(etag)$(ext)");
+            putPolicy.put("saveKey", "$(etag)");
             String upToken = auth.uploadToken(bucket, null, 3600, putPolicy);
 
             try {
