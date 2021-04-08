@@ -5,17 +5,16 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.ObjectUtils;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import run.nya.petbbs.common.api.ApiResult;
+import run.nya.petbbs.model.dto.NotifyDTO;
 import run.nya.petbbs.model.entity.SysNotify;
 import run.nya.petbbs.model.entity.SysUser;
 import run.nya.petbbs.service.ISysNotifyService;
 import run.nya.petbbs.service.ISysUserService;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
 
@@ -103,6 +102,25 @@ public class SysNotifyController extends BaseController {
         sysNotify.setState(false);
         iSysNotifyService.updateById(sysNotify);
         return ApiResult.success("操作成功");
+    }
+
+    /**
+     * 添加通知
+     * 超级管理员
+     * 管理员
+     *
+     * @param  dto
+     * @return ApiResult
+     */
+    @ApiOperation(value = "添加通知")
+    @PreAuthorize("hasRole('ROLE_SUPERADMIN') or hasRole('ROLE_ADMIN')")
+    @RequestMapping(value = "/admin/notify", method = RequestMethod.POST)
+    public ApiResult<SysNotify> addNotify(@Valid @RequestBody NotifyDTO dto) {
+        SysNotify sysNotify = iSysNotifyService.addNotify(dto);
+        if (ObjectUtils.isEmpty(sysNotify)) {
+            return ApiResult.failed("添加失败");
+        }
+        return ApiResult.success(sysNotify);
     }
 
 }

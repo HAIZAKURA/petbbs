@@ -22,4 +22,6 @@ public class CreatePostDTO implements Serializable {
 
     private List<SysTag> tags;
 
+    private Integer sectionId;
+
 }

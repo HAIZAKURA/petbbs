@@ -1,6 +1,7 @@
 package run.nya.petbbs.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import run.nya.petbbs.model.dto.NotifyDTO;
 import run.nya.petbbs.model.entity.SysNotify;
 
 /**
@@ -34,5 +35,13 @@ public interface ISysNotifyService extends IService<SysNotify> {
      * @param  followingId
      */
     void followNotify(String userId, String followingId);
+
+    /**
+     * 添加通知
+     *
+     * @param  dto
+     * @return SysNotify
+     */
+    SysNotify addNotify(NotifyDTO dto);
 
 }

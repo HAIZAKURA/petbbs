@@ -184,6 +184,7 @@ public class ISysPostServiceImpl extends ServiceImpl<SysPostMapper, SysPost> imp
                 .userId(sysUser.getId())
                 .title(dto.getTitle())
                 .content(EmojiParser.parseToUnicode(dto.getContent()))
+                .sectionId(dto.getSectionId())
                 .createTime(new Date())
                 .build();
         baseMapper.insert(post);

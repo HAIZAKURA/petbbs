@@ -8,10 +8,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 import run.nya.petbbs.common.exception.ApiAsserts;
 import run.nya.petbbs.mapper.SysNotifyMapper;
+import run.nya.petbbs.model.dto.NotifyDTO;
 import run.nya.petbbs.model.entity.SysNotify;
 import run.nya.petbbs.model.entity.SysPhoto;
 import run.nya.petbbs.model.entity.SysPost;
-import run.nya.petbbs.model.entity.SysVideoPost;
 import run.nya.petbbs.service.*;
 
 import java.util.Date;
@@ -31,9 +31,6 @@ public class ISysNotifyServiceImpl extends ServiceImpl<SysNotifyMapper, SysNotif
 
     @Autowired
     private ISysPostService iSysPostService;
-
-    @Autowired
-    private ISysVideoPostService iSysVideoPostService;
 
     @Autowired
     private ISysPhotoService iSysPhotoService;
@@ -126,6 +123,24 @@ public class ISysNotifyServiceImpl extends ServiceImpl<SysNotifyMapper, SysNotif
                 .build();
         baseMapper.insert(notify);
 //        return notify;
+    }
+
+    /**
+     * 添加通知
+     *
+     * @param  dto
+     * @return SysNotify
+     */
+    @Override
+    public SysNotify addNotify(NotifyDTO dto) {
+        SysNotify sysNotify = SysNotify.builder()
+                .userId(dto.getUserId())
+                .content(dto.getContent())
+                .remark(dto.getRemark())
+                .createTime(new Date())
+                .build();
+        baseMapper.insert(sysNotify);
+        return sysNotify;
     }
 
 }

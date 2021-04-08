@@ -28,9 +28,9 @@ public class ISysSectionServiceImpl extends ServiceImpl<SysSectionMapper, SysSec
      * @return SysSection
      */
     @Override
-    public SysSection addSection(SectionDTO dto) {
+    public SysSection addSection(SectionDTO dto, String userId) {
         SysSection sysSection = SysSection.builder()
-                .userId(dto.getUserId())
+                .userId(userId)
                 .title(dto.getTitle())
                 .description(dto.getDescription())
                 .thumbnail(dto.getThumbnail())

@@ -11,11 +11,16 @@ import org.springframework.web.bind.annotation.*;
 import run.nya.petbbs.common.api.ApiResult;
 import run.nya.petbbs.model.dto.SectionDTO;
 import run.nya.petbbs.model.entity.SysSection;
+import run.nya.petbbs.model.entity.SysUser;
 import run.nya.petbbs.service.ISysSectionService;
+import run.nya.petbbs.service.ISysUserService;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
+import java.security.Principal;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -31,6 +36,26 @@ public class SysSectionController extends BaseController {
     @Resource
     private ISysSectionService iSysSectionService;
 
+    @Resource
+    private ISysUserService iSysUserService;
+
+    /**
+     * 获取所有有效专栏
+     *
+     * @param  pageNum
+     * @param  pageSize
+     * @return ApiResult
+     */
+    @ApiOperation(value = "获取所有有效专栏")
+    @RequestMapping(value = "/section", method = RequestMethod.GET)
+    public ApiResult<Page<SysSection>> getSections(
+            @ApiParam(name = "pageNum", value = "页码:默认0", required = true) @RequestParam(value = "pageNum", defaultValue = "0") Integer pageNum,
+            @ApiParam(name = "pageSize", value = "每页数据量:默认10", required = true) @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize
+    ) {
+        Page<SysSection> page = iSysSectionService.page(new Page<>(pageNum, pageSize), new LambdaQueryWrapper<SysSection>().eq(SysSection::getState, true));
+        return ApiResult.success(page);
+    }
+
     /**
      * 获取所有专栏
      *
@@ -38,14 +63,31 @@ public class SysSectionController extends BaseController {
      * @param  pageSize
      * @return ApiResult
      */
-    @ApiOperation(value = "获取所有专栏")
-    @RequestMapping(value = "/section", method = RequestMethod.GET)
-    public ApiResult<Page<SysSection>> getSections(
+    @ApiOperation(value = "获取所有有效专栏")
+    @PreAuthorize("hasRole('ROLE_SUPERADMIN') or hasRole('ROLE_ADMIN')")
+    @RequestMapping(value = "/admin/section", method = RequestMethod.GET)
+    public ApiResult<Page<SysSection>> getAllSections(
             @ApiParam(name = "pageNum", value = "页码:默认0", required = true) @RequestParam(value = "pageNum", defaultValue = "0") Integer pageNum,
             @ApiParam(name = "pageSize", value = "每页数据量:默认10", required = true) @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize
     ) {
         Page<SysSection> page = iSysSectionService.page(new Page<>(pageNum, pageSize), null);
         return ApiResult.success(page);
+    }
+
+    /**
+     * 获取当前用户专栏
+     *
+     * @param  principal
+     * @return ApiResult
+     */
+    @ApiOperation(value = "获取当前用户专栏")
+    @PreAuthorize("isAuthenticated()")
+    @RequestMapping(value = "/my/section", method = RequestMethod.GET)
+    public ApiResult<List<SysSection>> getUserSections(Principal principal) {
+        List<SysSection> sectionList = new ArrayList<>(16);
+        SysUser sysUser = iSysUserService.getUserByUsername(principal.getName());
+        sectionList = iSysSectionService.list(new LambdaQueryWrapper<SysSection>().eq(SysSection::getUserId, sysUser.getId()));
+        return ApiResult.success(sectionList);
     }
 
     /**
@@ -69,24 +111,21 @@ public class SysSectionController extends BaseController {
     }
 
     /**
-     * 添加专栏
-     * 超级管理员
-     * 管理员
+     * 申请专栏
      *
      * @param  dto
      * @return ApiResult
      */
-    @ApiOperation(value = "管理员添加专栏")
-    @PreAuthorize("hasRole('ROLE_SUPERADMIN') or hasRole('ROLE_ADMIN')")
-    @RequestMapping(value = "/admin/section", method = RequestMethod.POST)
-    public ApiResult<Map<String, Object>> addSection(@Valid @RequestBody SectionDTO dto) {
-        SysSection sysSection = iSysSectionService.addSection(dto);
+    @ApiOperation(value = "申请专栏")
+    @PreAuthorize("isAuthenticated()")
+    @RequestMapping(value = "/section", method = RequestMethod.POST)
+    public ApiResult<SysSection> addSection(@Valid @RequestBody SectionDTO dto, Principal principal) {
+        SysUser sysUser = iSysUserService.getUserByUsername(principal.getName());
+        SysSection sysSection = iSysSectionService.addSection(dto, sysUser.getId());
         if (ObjectUtils.isEmpty(sysSection)) {
-            return ApiResult.failed("添加失败");
+            return ApiResult.failed("添失败");
         }
-        Map<String, Object> map = new HashMap<>(16);
-        map.put("section", sysSection);
-        return ApiResult.success(map);
+        return ApiResult.success(sysSection);
     }
 
     /**

@@ -42,4 +42,8 @@ public class SysSection implements Serializable {
     @TableField("thumbnail")
     private String thumbnail;
 
+    @Builder.Default
+    @TableField("state")
+    private Boolean state = false;
+
 }

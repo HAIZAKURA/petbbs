@@ -12,9 +12,6 @@ import javax.validation.constraints.NotBlank;
 @Data
 public class SectionDTO {
 
-    @NotBlank(message = "专栏作者不能为空")
-    private String userId;
-
     @NotBlank(message = "专栏标题不能为空")
     private String title;
 

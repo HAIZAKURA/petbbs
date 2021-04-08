@@ -19,7 +19,7 @@ public interface ISysSectionService extends IService<SysSection> {
      * @param  dto
      * @return SysSection
      */
-    SysSection addSection(SectionDTO dto);
+    SysSection addSection(SectionDTO dto, String userId);
 
     /**
      * 查询专栏列表
