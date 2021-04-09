@@ -12,7 +12,6 @@ import run.nya.petbbs.common.api.ApiResult;
 import run.nya.petbbs.common.exception.ApiAsserts;
 import run.nya.petbbs.model.entity.SysComment;
 import run.nya.petbbs.model.entity.SysConfig;
-import run.nya.petbbs.model.entity.SysPhoto;
 import run.nya.petbbs.model.entity.SysPost;
 import run.nya.petbbs.service.*;
 import run.nya.petbbs.util.SysMailUtil;

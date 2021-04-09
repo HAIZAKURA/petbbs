@@ -4,8 +4,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import run.nya.petbbs.model.dto.CreatePostDTO;
 import run.nya.petbbs.model.entity.SysPost;
-import run.nya.petbbs.model.entity.SysSection;
-import run.nya.petbbs.model.entity.SysTag;
 import run.nya.petbbs.model.entity.SysUser;
 import run.nya.petbbs.model.vo.PostVO;
 

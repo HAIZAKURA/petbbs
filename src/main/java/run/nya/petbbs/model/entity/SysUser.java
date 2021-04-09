@@ -60,16 +60,10 @@ public class SysUser implements Serializable {
     @TableField("bio")
     private String bio = "这里什么都没有哦";
 
-    /**
-     * 激活
-     */
     @Builder.Default
     @TableField("active")
     private Boolean active = false;
 
-    /**
-     * 状态
-     */
     @Builder.Default
     @TableField("status")
     private Boolean status = true;

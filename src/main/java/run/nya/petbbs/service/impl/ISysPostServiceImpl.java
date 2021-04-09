@@ -199,18 +199,6 @@ public class ISysPostServiceImpl extends ServiceImpl<SysPostMapper, SysPost> imp
     }
 
     /**
-     * 专栏检索
-     *
-     * @param  page
-     * @param  section
-     * @return Page
-     */
-//    @Override
-//    public Page<PostVO> selectBySection(Page<PostVO> page, SysSection section) {
-//        return baseMapper.selectBySection(page, section);
-//    }
-
-    /**
      * 关键字检索
      *
      * @param  keyword

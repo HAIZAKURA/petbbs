@@ -13,7 +13,7 @@ import org.springframework.data.elasticsearch.annotations.FieldType;
 import java.io.Serializable;
 import java.util.Date;
 
-/**\
+/**
  * 收藏实体类
  *
  * 2021/03/07

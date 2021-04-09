@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import run.nya.petbbs.model.entity.SysCollect;
 import run.nya.petbbs.model.vo.CollectVO;
-import run.nya.petbbs.model.vo.PostVO;
 
 /**
  * 收藏接口

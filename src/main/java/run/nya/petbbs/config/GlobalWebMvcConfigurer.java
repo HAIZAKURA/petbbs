@@ -29,6 +29,9 @@ public class GlobalWebMvcConfigurer implements WebMvcConfigurer {
                 .maxAge(3600);
     }
 
+    /**
+     * 跨域过滤器
+     */
     @Bean
     public CorsFilter corsFilter() {
         CorsConfiguration configuration = new CorsConfiguration();

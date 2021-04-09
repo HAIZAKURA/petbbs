@@ -20,7 +20,7 @@ import java.util.List;
 public class IgnoreUrlsConfig {
 
     /**
-     * White List
+     * 白名单
      */
     private List<String> urls = new ArrayList<>();
 }

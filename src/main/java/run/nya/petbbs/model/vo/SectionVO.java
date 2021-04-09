@@ -15,6 +15,4 @@ public class SectionVO extends SysSection {
 
     private Integer posts;
 
-//    private Integer followers;
-
 }

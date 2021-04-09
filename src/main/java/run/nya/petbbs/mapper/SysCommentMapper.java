@@ -9,8 +9,6 @@ import run.nya.petbbs.model.entity.SysComment;
 import run.nya.petbbs.model.vo.CommentVO;
 import run.nya.petbbs.model.vo.QuoteVO;
 
-import java.util.List;
-
 /**
  * 评论
  *

@@ -56,7 +56,7 @@ public class RedisConfig extends CachingConfigurerSupport {
      */
     @Bean
     public CacheManager cacheManager(RedisConnectionFactory factory) {
-        // 配置序列化（解决乱码的问题）
+        // 配置序列化 解决乱码的问题
         GenericJackson2JsonRedisSerializer genericJackson2JsonRedisSerializer = new GenericJackson2JsonRedisSerializer();
         RedisSerializer<String> redisSerializer = new StringRedisSerializer();
         // 配置序列化
@@ -75,7 +75,7 @@ public class RedisConfig extends CachingConfigurerSupport {
         RedisTemplate<String, Object> redisTemplate = new RedisTemplate<String, Object>();
         // 注入数据源
         redisTemplate.setConnectionFactory(factory);
-        // 使用Jackson2JsonRedisSerialize 替换默认序列化
+        // 使用Jackson2JsonRedisSerialize替换默认序列化
         Jackson2JsonRedisSerializer jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer(Object.class);
         StringRedisSerializer stringRedisSerializer = new StringRedisSerializer();
         ObjectMapper om = new ObjectMapper();
@@ -87,11 +87,11 @@ public class RedisConfig extends CachingConfigurerSupport {
         redisTemplate.setKeySerializer(stringRedisSerializer);
         // value序列化方式采用jackson
         redisTemplate.setValueSerializer(jackson2JsonRedisSerializer);
-        // hash的key也采用String的序列化方式，默认基于jdk序列化的
+        // hash的key也采用String的序列化方式 默认基于jdk序列化
         redisTemplate.setHashKeySerializer(stringRedisSerializer);
         // hash的value序列化方式采用jackson
         redisTemplate.setHashValueSerializer(jackson2JsonRedisSerializer);
-        // 启用默认序列化方式,使用JSON格式的序列化,保存
+        // 启用默认序列化方式 使用JSON格式的序列化保存
         redisTemplate.setEnableDefaultSerializer(true);
         redisTemplate.setDefaultSerializer(jackson2JsonRedisSerializer);
 

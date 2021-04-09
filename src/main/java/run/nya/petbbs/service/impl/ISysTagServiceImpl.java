@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import run.nya.petbbs.mapper.SysTagMapper;
 import run.nya.petbbs.model.entity.SysPost;
 import run.nya.petbbs.model.entity.SysTag;
-import run.nya.petbbs.model.vo.PostVO;
 import run.nya.petbbs.service.ISysPostService;
 import run.nya.petbbs.service.ISysPostTagService;
 import run.nya.petbbs.service.ISysTagService;

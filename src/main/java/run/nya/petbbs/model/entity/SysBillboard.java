@@ -34,9 +34,6 @@ public class SysBillboard implements Serializable {
     @TableField(value = "create_time", fill = FieldFill.INSERT)
     private Date createTime;
 
-    /**
-     * 展示
-     */
     @Builder.Default
     @TableField("state")
     private Boolean state = true;

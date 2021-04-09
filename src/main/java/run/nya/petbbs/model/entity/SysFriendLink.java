@@ -39,9 +39,6 @@ public class SysFriendLink implements Serializable {
     @TableField("icon")
     private String icon;
 
-    /**
-     * 状态
-     */
     @Builder.Default
     @TableField("state")
     private Boolean state = true;

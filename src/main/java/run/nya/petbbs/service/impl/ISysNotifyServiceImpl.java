@@ -45,7 +45,6 @@ public class ISysNotifyServiceImpl extends ServiceImpl<SysNotifyMapper, SysNotif
     @Override
     public void commentNotify(String postId, String commentId) {
         SysPost sysPost = iSysPostService.getById(postId);
-//        SysVideoPost sysVideoPost = iSysVideoPostService.getById(postId);
         SysPhoto sysPhoto = iSysPhotoService.getById(postId);
         String userId = "";
         String content = "";
@@ -81,7 +80,6 @@ public class ISysNotifyServiceImpl extends ServiceImpl<SysNotifyMapper, SysNotif
     @Override
     public void quoteNotify(String userId, String postId, String commentId) {
         SysPost sysPost = iSysPostService.getById(postId);
-//        SysVideoPost sysVideoPost = iSysVideoPostService.getById(postId);
         SysPhoto sysPhoto = iSysPhotoService.getById(postId);
         String content = "";
         String remark = "";

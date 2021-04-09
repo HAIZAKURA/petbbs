@@ -1,6 +1,6 @@
 package run.nya.petbbs.config.security.config;
 //
-// import com.tiny.commons.config.BaseRedisConfig;
+// import run.nya.petbbs.commons.config.BaseRedisConfig;
 // import org.springframework.cache.annotation.EnableCaching;
 // import org.springframework.context.annotation.Configuration;
 //

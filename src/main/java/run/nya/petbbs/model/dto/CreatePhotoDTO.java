@@ -18,6 +18,4 @@ public class CreatePhotoDTO implements Serializable {
 
     private String content;
 
-//    private List<SysTag> tags;
-
 }

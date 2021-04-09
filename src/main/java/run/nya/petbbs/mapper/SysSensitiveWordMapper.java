@@ -16,6 +16,11 @@ import java.util.List;
 @Repository
 public interface SysSensitiveWordMapper extends BaseMapper<SysSensitiveWord> {
 
+    /**
+     * 查询敏感词列表
+     *
+     * @return List
+     */
     List<String> getWords();
 
 }

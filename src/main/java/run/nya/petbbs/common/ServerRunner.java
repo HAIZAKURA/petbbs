@@ -17,8 +17,8 @@ public class ServerRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        logger.info("Server: http://127.0.0.1:8080");
-        logger.info("ApiDoc: http://127.0.0.1:8080/swagger-ui.html");
+        logger.info("Server: http://127.0.0.1:8080 ⚡️");
+        logger.info("ApiDoc: http://127.0.0.1:8080/swagger-ui.html 📖");
     }
 
 }

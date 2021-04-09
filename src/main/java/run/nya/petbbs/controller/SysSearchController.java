@@ -50,6 +50,11 @@ public class SysSearchController extends BaseController {
         return ApiResult.success(res);
     }
 
+    /**
+     * 随机话题
+     *
+     * @return ApiResult
+     */
     @RequestMapping(value = "/random", method = RequestMethod.GET)
     public ApiResult<SysPost> randomPost() {
         SysPost post = sysPostMapper.randomPost();

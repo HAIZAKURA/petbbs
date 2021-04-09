@@ -12,7 +12,6 @@ import run.nya.petbbs.model.entity.SysCollect;
 import run.nya.petbbs.model.entity.SysPostTag;
 import run.nya.petbbs.model.entity.SysTag;
 import run.nya.petbbs.model.vo.CollectVO;
-import run.nya.petbbs.model.vo.PostVO;
 import run.nya.petbbs.service.ISysCollectService;
 import run.nya.petbbs.service.ISysPostTagService;
 

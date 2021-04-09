@@ -87,13 +87,4 @@ public class SysSensitiveWordController extends BaseController {
         return ApiResult.success("删除成功");
     }
 
-//    @RequestMapping(value = "/test", method = RequestMethod.POST)
-//    public ApiResult<String> test(@RequestBody String text) {
-//        List<String> list = iSysSensitiveWordService.getWords();
-//        for (String word : list) {
-//            text = text.replace(word, "***");
-//        }
-//        return ApiResult.success(text);
-//    }
-
 }
