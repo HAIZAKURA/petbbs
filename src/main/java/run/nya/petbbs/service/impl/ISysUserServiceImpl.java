@@ -227,6 +227,37 @@ public class ISysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> imp
     }
 
     /**
+     * 重置密码
+     *
+     * @param id
+     * @param newPass
+     * @return
+     */
+    @Override
+    public boolean resetPassword(String id, String email,String newPass) {
+        SysUser user = baseMapper.selectById(id);
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        String encode = encoder.encode(newPass);
+        user.setPassword(encode);
+        if (baseMapper.updateById(user) > 0) {
+            String domain = sysConfigMapper
+                    .selectOne(new LambdaQueryWrapper<SysConfig>().eq(SysConfig::getItem, "site_domain"))
+                    .getValue();
+            String content = "您的账号密码已被重置，新密码为：<br /><b>" + newPass + "</b>";
+            ThreadUtil.execAsync(() -> {
+                try {
+                    SysMailUtil sysMailUtil = new SysMailUtil();
+                    sysMailUtil.sendMail(email, "账号密码重置", content, true);
+                } catch (Exception e) {
+                    ApiAsserts.fail("发送失败！");
+                }
+            });
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * 获取所有用户
      *
      * @param page

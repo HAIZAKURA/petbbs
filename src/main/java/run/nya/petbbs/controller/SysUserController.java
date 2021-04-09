@@ -1,5 +1,6 @@
 package run.nya.petbbs.controller;
 
+import cn.hutool.core.util.RandomUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
@@ -324,6 +325,33 @@ public class SysUserController extends BaseController {
             return ApiResult.failed("账号未激活");
         }
         if (iSysUserService.changePassword(user.getId(), oldPass, newPass)) {
+            return ApiResult.success("操作成功");
+        }
+        return ApiResult.failed("操作失败");
+    }
+
+    /**
+     * 重置密码
+     *
+     * @param  username
+     * @param  email
+     * @return ApiResult
+     */
+    @ApiOperation(value = "重置密码")
+    @RequestMapping(value = "/r-password", method = RequestMethod.GET)
+    public ApiResult<String> resetPassword(
+            @RequestParam(value = "user") String username,
+            @RequestParam(value = "email") String email
+    ) {
+        SysUser user = iSysUserService.getUserByUsername(username);
+        if (ObjectUtils.isEmpty(user)) {
+            return ApiResult.failed("用户不存在");
+        }
+        if (!user.getEmail().equals(email)) {
+            return ApiResult.failed("用户邮箱不匹配");
+        }
+        String newPass = RandomUtil.randomString(8);
+        if (iSysUserService.resetPassword(user.getId(), email, newPass)) {
             return ApiResult.success("操作成功");
         }
         return ApiResult.failed("操作失败");

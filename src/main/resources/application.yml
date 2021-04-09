@@ -88,6 +88,7 @@ secure:
       - /api/photo
       - /api/photo/**
       - /api/summary
+      - /api/r-password
 
 logging:
   level:
