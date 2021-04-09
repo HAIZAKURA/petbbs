@@ -17,8 +17,17 @@ public class ServerRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+        logger.info(" _  _   _   ___ ____  _   _  ___   _ ___    _");
+        logger.info("| || | /_\\ |_ _|_  / /_\\ | |/ / | | | _ \\  /_\\");
+        logger.info("| __ |/ _ \\ | | / / / _ \\| ' <| |_| |   / / _ \\");
+        logger.info("|_||_/_/ \\_\\___/___/_/ \\_\\_|\\_\\\\___/|_|_\\/_/ \\_\\");
         logger.info("Server: http://127.0.0.1:8080 ⚡️");
         logger.info("ApiDoc: http://127.0.0.1:8080/swagger-ui.html 📖");
     }
 
 }
+
+//     _  _   _   ___ ____  _   _  ___   _ ___    _
+//    | || | /_\ |_ _|_  / /_\ | |/ / | | | _ \  /_\
+//    | __ |/ _ \ | | / / / _ \| ' <| |_| |   / / _ \
+//    |_||_/_/ \_\___/___/_/ \_\_|\_\\___/|_|_\/_/ \_\
