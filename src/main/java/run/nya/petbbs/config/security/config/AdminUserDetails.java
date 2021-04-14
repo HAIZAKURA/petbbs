@@ -26,16 +26,15 @@ public class AdminUserDetails implements UserDetails {
         if (sysUser.getRoleId() != null) {
             if (sysUser.getRoleId() == 1) {
                 return AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_SUPERADMIN");
-            } else if (sysUser.getRoleId() == 2) {
-                return AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_ADMIN");
-            } else if (sysUser.getRoleId() == 10000) {
-                return AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_USER");
-            } else {
-                return null;
             }
-        } else {
-            return null;
+            if (sysUser.getRoleId() == 2) {
+                return AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_ADMIN");
+            }
+            if (sysUser.getRoleId() == 10000) {
+                return AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_USER");
+            }
         }
+        return null;
     }
 
     @Override
