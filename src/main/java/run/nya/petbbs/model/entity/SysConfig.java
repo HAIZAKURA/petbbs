@@ -36,11 +36,4 @@ public class SysConfig implements Serializable {
     @TableField("value")
     private String value;
 
-    @TableField("remark")
-    private String remark;
-
-    @Builder.Default
-    @TableField("reboot")
-    private Boolean reboot = false;
-
 }
