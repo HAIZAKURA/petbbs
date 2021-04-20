@@ -41,7 +41,7 @@ public class SysUser implements Serializable {
 
     @Builder.Default
     @TableField("avatar")
-    private String avatar = "https://cdn.jsdelivr.net/gh/HAIZAKURA/cdn@1.4.2/img/avatar/17_1_一姫2.png";
+    private String avatar = "http://demo.nya.run/DfHNo4.jpg";
 
     @TableField("email")
     private String email;
@@ -49,8 +49,9 @@ public class SysUser implements Serializable {
     @TableField("mobile")
     private String mobile;
 
+    @Builder.Default
     @TableField("score")
-    private Integer score;
+    private Integer score = 0;
 
     @JsonIgnore
     @TableField("token")
