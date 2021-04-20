@@ -133,7 +133,6 @@ public class ISysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> imp
                 .password(passwordEncoder.encode(dto.getPass()))
                 .email(dto.getEmail())
                 .createTime(new Date())
-                .status(true)
                 .build();
         baseMapper.insert(addUser);
 
