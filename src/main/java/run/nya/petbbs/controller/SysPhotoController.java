@@ -11,9 +11,11 @@ import org.springframework.web.bind.annotation.*;
 import run.nya.petbbs.common.api.ApiResult;
 import run.nya.petbbs.model.dto.CreatePhotoDTO;
 import run.nya.petbbs.model.entity.SysPhoto;
+import run.nya.petbbs.model.entity.SysPostTag;
 import run.nya.petbbs.model.entity.SysUser;
 import run.nya.petbbs.model.vo.PhotoVO;
 import run.nya.petbbs.service.ISysPhotoService;
+import run.nya.petbbs.service.ISysPostTagService;
 import run.nya.petbbs.service.ISysSensitiveWordService;
 import run.nya.petbbs.service.ISysUserService;
 
@@ -41,6 +43,9 @@ public class SysPhotoController extends BaseController {
 
     @Resource
     private ISysSensitiveWordService iSysSensitiveWordService;
+
+    @Resource
+    private ISysPostTagService iSysPostTagService;
 
     /**
      * 获取照片列表
@@ -139,6 +144,7 @@ public class SysPhotoController extends BaseController {
             return ApiResult.failed("不能删除别人的照片哦");
         }
         iSysPhotoService.removeById(id);
+        iSysPostTagService.removeById(new LambdaQueryWrapper<SysPostTag>().eq(SysPostTag::getPostId, id));
         return ApiResult.success("操作成功");
     }
 
@@ -159,6 +165,7 @@ public class SysPhotoController extends BaseController {
             return ApiResult.failed("照片不存在");
         }
         iSysPhotoService.removeById(id);
+        iSysPostTagService.removeById(new LambdaQueryWrapper<SysPostTag>().eq(SysPostTag::getPostId, id));
         return ApiResult.success("操作成功");
     }
 
