@@ -1,5 +1,6 @@
 package run.nya.petbbs.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import run.nya.petbbs.common.api.ApiResult;
 import run.nya.petbbs.model.dto.CreateCommentDTO;
 import run.nya.petbbs.model.entity.SysComment;
+import run.nya.petbbs.model.entity.SysCommentQuote;
 import run.nya.petbbs.model.entity.SysUser;
 import run.nya.petbbs.model.vo.CommentVO;
 import run.nya.petbbs.service.*;
@@ -39,6 +41,9 @@ public class SysCommentController extends BaseController {
 
     @Resource
     private ISysSensitiveWordService iSysSensitiveWordService;
+
+    @Resource
+    private ISysCommentQuoteService iSysCommentQuoteService;
 
     /**
      * 获取评论列表
@@ -138,6 +143,7 @@ public class SysCommentController extends BaseController {
             return ApiResult.failed("不能删除别人的评论");
         }
         iSysCommentService.removeById(id);
+        iSysCommentQuoteService.removeById(new LambdaQueryWrapper<SysCommentQuote>().eq(SysCommentQuote::getCommentId, id));
         return ApiResult.success("删除成功");
     }
 
@@ -160,6 +166,7 @@ public class SysCommentController extends BaseController {
             return ApiResult.failed("评论不存在");
         }
         iSysCommentService.removeById(id);
+        iSysCommentQuoteService.removeById(new LambdaQueryWrapper<SysCommentQuote>().eq(SysCommentQuote::getCommentId, id));
         return ApiResult.success("删除成功");
     }
 
