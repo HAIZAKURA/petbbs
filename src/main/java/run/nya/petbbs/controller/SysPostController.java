@@ -1,5 +1,6 @@
 package run.nya.petbbs.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.vdurmont.emoji.EmojiParser;
 import io.swagger.annotations.Api;
@@ -12,9 +13,11 @@ import run.nya.petbbs.common.api.ApiResult;
 import run.nya.petbbs.model.dto.CreatePostDTO;
 import run.nya.petbbs.model.dto.QuickEditPostDTO;
 import run.nya.petbbs.model.entity.SysPost;
+import run.nya.petbbs.model.entity.SysPostTag;
 import run.nya.petbbs.model.entity.SysUser;
 import run.nya.petbbs.model.vo.PostVO;
 import run.nya.petbbs.service.ISysPostService;
+import run.nya.petbbs.service.ISysPostTagService;
 import run.nya.petbbs.service.ISysSensitiveWordService;
 import run.nya.petbbs.service.ISysUserService;
 
@@ -43,6 +46,9 @@ public class SysPostController extends BaseController {
 
     @Resource
     private ISysSensitiveWordService iSysSensitiveWordService;
+
+    @Resource
+    private ISysPostTagService iSysPostTagService;
 
     /**
      * 获取话题列表
@@ -194,6 +200,7 @@ public class SysPostController extends BaseController {
             return ApiResult.failed("不能删除别人的话题");
         }
         iSysPostService.removeById(id);
+        iSysPostTagService.removeById(new LambdaQueryWrapper<SysPostTag>().eq(SysPostTag::getPostId, id));
         return ApiResult.success("删除成功");
     }
 
@@ -216,6 +223,7 @@ public class SysPostController extends BaseController {
             return ApiResult.failed("话题不存在");
         }
         iSysPostService.removeById(id);
+        iSysPostTagService.removeById(new LambdaQueryWrapper<SysPostTag>().eq(SysPostTag::getPostId, id));
         return ApiResult.success("删除成功");
     }
 
