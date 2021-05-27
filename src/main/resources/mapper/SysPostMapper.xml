@@ -59,7 +59,7 @@
             ORDER BY p.top DESC, p.create_time DESC
         </if>
         <if test="tab == 'hot'">
-            ORDER BY p.view DESC, p.create_time DESC
+            ORDER BY p.top DESC, p.comments DESC, p.view DESC, p.create_time DESC
         </if>
     </select>
 
