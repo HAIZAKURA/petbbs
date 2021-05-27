@@ -12,6 +12,7 @@ import run.nya.petbbs.common.api.ApiResult;
 import run.nya.petbbs.model.dto.CreateCommentDTO;
 import run.nya.petbbs.model.entity.SysComment;
 import run.nya.petbbs.model.entity.SysCommentQuote;
+import run.nya.petbbs.model.entity.SysPost;
 import run.nya.petbbs.model.entity.SysUser;
 import run.nya.petbbs.model.vo.CommentVO;
 import run.nya.petbbs.service.*;
@@ -44,6 +45,9 @@ public class SysCommentController extends BaseController {
 
     @Resource
     private ISysCommentQuoteService iSysCommentQuoteService;
+
+    @Resource
+    private ISysPostService iSysPostService;
 
     /**
      * 获取评论列表
@@ -143,7 +147,10 @@ public class SysCommentController extends BaseController {
             return ApiResult.failed("不能删除别人的评论");
         }
         iSysCommentService.removeById(id);
-        iSysCommentQuoteService.removeById(new LambdaQueryWrapper<SysCommentQuote>().eq(SysCommentQuote::getCommentId, id));
+        iSysCommentQuoteService.remove(new LambdaQueryWrapper<SysCommentQuote>().eq(SysCommentQuote::getCommentId, id));
+        SysPost sysPost = iSysPostService.getById(sysComment.getPostId());
+        sysPost.setComments(sysPost.getComments() - 1);
+        iSysPostService.updateById(sysPost);
         return ApiResult.success("删除成功");
     }
 
@@ -166,7 +173,10 @@ public class SysCommentController extends BaseController {
             return ApiResult.failed("评论不存在");
         }
         iSysCommentService.removeById(id);
-        iSysCommentQuoteService.removeById(new LambdaQueryWrapper<SysCommentQuote>().eq(SysCommentQuote::getCommentId, id));
+        iSysCommentQuoteService.remove(new LambdaQueryWrapper<SysCommentQuote>().eq(SysCommentQuote::getCommentId, id));
+        SysPost sysPost = iSysPostService.getById(sysComment.getPostId());
+        sysPost.setComments(sysPost.getComments() - 1);
+        iSysPostService.updateById(sysPost);
         return ApiResult.success("删除成功");
     }
 
