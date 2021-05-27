@@ -193,8 +193,13 @@ public class ISysPostServiceImpl extends ServiceImpl<SysPostMapper, SysPost> imp
         if (ObjectUtils.isEmpty(dto.getTags())) {
             ApiAsserts.fail("标签不能为空");
         }
+        for(SysTag tag : dto.getTags()) {
+            SysTag sysTag = iSysTagService.getById(tag.getId());
+            sysTag.setPostCount(sysTag.getPostCount() + 1);
+            iSysTagService.updateById(sysTag);
+        }
         iSysPostTagService.createPostTag(post.getId(), dto.getTags());
-        redisService.del("getPostListAndPage");
+//        redisService.del("getPostListAndPage");
         return post;
     }
 
