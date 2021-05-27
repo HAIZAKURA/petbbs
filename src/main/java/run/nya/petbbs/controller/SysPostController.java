@@ -188,7 +188,7 @@ public class SysPostController extends BaseController {
     @PreAuthorize("isAuthenticated()")
     @RequestMapping(value = "/post/{id}", method = RequestMethod.DELETE)
     public ApiResult<String> delete(
-            @ApiParam(name = "id", value = "话题ID", required = true) @PathVariable("id") String id,
+            @ApiParam(name = "id", required = true) @PathVariable("id") String id,
             Principal principal
     ) {
         SysUser sysUser = iSysUserService.getUserByUsername(principal.getName());
@@ -200,7 +200,7 @@ public class SysPostController extends BaseController {
             return ApiResult.failed("不能删除别人的话题");
         }
         iSysPostService.removeById(id);
-        iSysPostTagService.removeById(new LambdaQueryWrapper<SysPostTag>().eq(SysPostTag::getPostId, id));
+        iSysPostTagService.remove(new LambdaQueryWrapper<SysPostTag>().eq(SysPostTag::getPostId, id));
         return ApiResult.success("删除成功");
     }
 
@@ -216,14 +216,14 @@ public class SysPostController extends BaseController {
     @PreAuthorize("hasRole('ROLE_SUPERADMIN') or hasRole('ROLE_ADMIN')")
     @RequestMapping(value = "/admin/post/{id}", method = RequestMethod.DELETE)
     public ApiResult<String> deleteByAdmin(
-            @ApiParam(name = "id", value = "话题ID", required = true) @PathVariable("id") String id
+            @ApiParam(name = "id", required = true) @PathVariable("id") String id
     ) {
         SysPost sysPost = iSysPostService.getById(id);
         if (ObjectUtils.isEmpty(sysPost)) {
             return ApiResult.failed("话题不存在");
         }
         iSysPostService.removeById(id);
-        iSysPostTagService.removeById(new LambdaQueryWrapper<SysPostTag>().eq(SysPostTag::getPostId, id));
+        iSysPostTagService.remove(new LambdaQueryWrapper<SysPostTag>().eq(SysPostTag::getPostId, id));
         return ApiResult.success("删除成功");
     }
 
