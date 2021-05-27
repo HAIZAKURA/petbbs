@@ -43,7 +43,7 @@
             </if>
             <if test="tab == 'hot'">
                 date(p.create_time) &lt;= date_add(curdate(), interval 1 day)
-                AND date(p.create_time) &gt;= date_sub(curdate(), interval 7 day)
+                AND date(p.create_time) &gt;= date_sub(curdate(), interval 3 day)
             </if>
             <if test="tab == 'top'">
                 p.top = true
