@@ -58,6 +58,11 @@ public class SysPhoto implements Serializable {
     @Field(type = FieldType.Integer)
     private Integer view = 0;
 
+    @TableField("good")
+    @Builder.Default
+    @Field(type = FieldType.Integer)
+    private Integer good = 0;
+
     @Field(type = FieldType.Date, format = DateFormat.basic_date_time)
     @TableField(value = "create_time", fill = FieldFill.INSERT)
     private Date createTime;
