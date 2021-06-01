@@ -10,14 +10,12 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 import run.nya.petbbs.common.api.ApiResult;
 import run.nya.petbbs.model.dto.CreatePhotoDTO;
+import run.nya.petbbs.model.dto.NotifyDTO;
 import run.nya.petbbs.model.entity.SysPhoto;
 import run.nya.petbbs.model.entity.SysPostTag;
 import run.nya.petbbs.model.entity.SysUser;
 import run.nya.petbbs.model.vo.PhotoVO;
-import run.nya.petbbs.service.ISysPhotoService;
-import run.nya.petbbs.service.ISysPostTagService;
-import run.nya.petbbs.service.ISysSensitiveWordService;
-import run.nya.petbbs.service.ISysUserService;
+import run.nya.petbbs.service.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
@@ -46,6 +44,9 @@ public class SysPhotoController extends BaseController {
 
     @Resource
     private ISysPostTagService iSysPostTagService;
+
+    @Resource
+    private ISysNotifyService iSysNotifyService;
 
     /**
      * 获取照片列表
@@ -166,6 +167,29 @@ public class SysPhotoController extends BaseController {
         }
         iSysPhotoService.removeById(id);
         iSysPostTagService.removeById(new LambdaQueryWrapper<SysPostTag>().eq(SysPostTag::getPostId, id));
+        return ApiResult.success("操作成功");
+    }
+
+    /**
+     * 点赞照片
+     *
+     * @param  id
+     * @return ApiResult
+     */
+    @ApiOperation(value = "点赞照片")
+    @RequestMapping(value = "/photo/{id}", method = RequestMethod.PUT)
+    public ApiResult<String> good(@PathVariable("id") String id) {
+        SysPhoto photo = iSysPhotoService.getById(id);
+        if (ObjectUtils.isEmpty(photo)) {
+            return ApiResult.failed("照片不存在");
+        }
+        photo.setGood(photo.getGood() + 1);
+        iSysPhotoService.updateById(photo);
+        NotifyDTO dto = new NotifyDTO();
+        dto.setUserId(photo.getUserId());
+        dto.setContent("有人点赞了你的照片哦！");
+        dto.setRemark("photos/" + id);
+        iSysNotifyService.addNotify(dto);
         return ApiResult.success("操作成功");
     }
 
