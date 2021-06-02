@@ -20,7 +20,7 @@ import java.util.Map;
  * JWT Token的格式：header.payload.signature
  * header的格式（算法、token的类型）：
  * {"alg": "HS512","typ": "JWT"}
- * payload的格式（用户名、创建时间、生成时间）：
+ * payload的格式（用户名、创建时间、过期时间）：
  * {"sub":"jiang","created":1489079981393,"exp":1489684781}
  * signature的生成算法：
  * HMACSHA512(base64UrlEncode(header) + "." +base64UrlEncode(payload),secret)
@@ -86,7 +86,11 @@ public class JwtTokenUtil {
      * 生成token的过期时间
      */
     private Date generateExpirationDate() {
-        return new Date(System.currentTimeMillis() + expiration * 1000);
+//        Date cur = new Date(System.currentTimeMillis());
+        Date exp = new Date(System.currentTimeMillis() + expiration * 1000);
+//        System.out.println((long)cur.getTime());
+//        System.out.println((long)exp.getTime());
+        return exp;
     }
 
     /**
