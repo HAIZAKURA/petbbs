@@ -103,6 +103,7 @@ public class ISysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> imp
             }
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+//            System.out.println(userDetails);
             token = jwtTokenUtil.generateToken(userDetails);
         } catch (UsernameNotFoundException e) {
             log.warn("用户不存在：", dto.getUsername());
