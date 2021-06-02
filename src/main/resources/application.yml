@@ -55,6 +55,7 @@ jwt:
 secure:
   ignored:
     urls:
+      - /**
       - /swagger-ui.html
       - /swagger-resources/**
       - /swagger/**
