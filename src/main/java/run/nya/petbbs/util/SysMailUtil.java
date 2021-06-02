@@ -5,6 +5,7 @@ import cn.hutool.extra.mail.MailUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import run.nya.petbbs.common.exception.ApiAsserts;
 import run.nya.petbbs.mapper.SysConfigMapper;
 import run.nya.petbbs.model.entity.SysConfig;
 
@@ -68,7 +69,9 @@ public class SysMailUtil {
         try {
             MailUtil.send(account, to, subject, content, isHtml);
         } catch (Exception e) {
-            e.printStackTrace();;
+            ApiAsserts.fail("发送失败");
+            e.printStackTrace();
+            return false;
         }
         return true;
     }
