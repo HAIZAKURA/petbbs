@@ -65,7 +65,11 @@ public class SysMailUtil {
         account.setHost(mailHost);
         account.setPort(mailPort);
         account.setSslEnable(mailSsl);
-        MailUtil.send(account, to, subject, content, isHtml);
+        try {
+            MailUtil.send(account, to, subject, content, isHtml);
+        } catch (Exception e) {
+            e.printStackTrace();;
+        }
         return true;
     }
 
